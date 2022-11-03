@@ -4,7 +4,21 @@ const apiKey = "PNWqQ8p6R5sWevhU4Hu0";
 const url = "https://opendata.metropolia.fi/r1/reservation/search";
 const proxy = "https://salty-ocean-03856.herokuapp.com/";
 
-const test = async () => {
+//hakee Karaportin kaikki huoneet
+const getRooms = async () => {
+  const response = await fetch(
+    proxy + "https://opendata.metropolia.fi/r1/reservation/building/78025",
+    {
+      headers: {
+        Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
+      },
+    }
+  );
+  const result = await response.json();
+  console.log("getRooms", result);
+};
+
+const getReservations = async (startDate, endDate, room) => {
   //toi proxy on nyt oma mutta pitää harkita jaksaako väsää omalle servulle jossain kohtaa vai riittääkö toi heroku.
   const response = await fetch(proxy + url, {
     method: "POST",
@@ -19,6 +33,7 @@ const test = async () => {
   for (let i = 0; i < result.reservations.length; i++) {
     console.table(result.reservations[i]);
   }
-  console.log(result);
+  console.log("getReservations", result);
 };
-test();
+getRooms();
+getReservations();
