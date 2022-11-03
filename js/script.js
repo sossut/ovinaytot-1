@@ -31,11 +31,11 @@ const getRooms = async () => {
 };
 
 const getReservations = (today, room) => {
-  reservationsUl.innerHTML = "";
   const date = new Date();
   today = date.toISOString().split("T")[0];
 
   roomsForm.addEventListener("submit", async (e) => {
+    reservationsUl.innerHTML = "";
     e.preventDefault();
     room = roomsSelect[roomsSelect.selectedIndex].value;
     console.log(room);
