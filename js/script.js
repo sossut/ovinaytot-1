@@ -60,5 +60,10 @@ const getReservations = (today, room) => {
     console.log("getReservations", result);
   });
 };
+
+const date = new Date();
+const todayDate = date.toDateString();
+document.getElementById("today-date").innerHTML = todayDate;
+
 getRooms();
 getReservations();

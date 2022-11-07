@@ -1,0 +1,37 @@
+html {
+  margin: auto;
+  padding: 0;
+  background-color: whitesmoke;
+  width: 50%;
+  font-family: "Roboto", sans-serif;
+}
+#reservations-ul {
+  padding: 1rem;
+  border: 1px solid black;
+  list-style: none;
+  margin-top: 3rem;
+}
+#reservations-ul li {
+  border: 1px solid black;
+  padding: 2rem;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: lightcyan;
+}
+#reservations-ul li:not(:first-child) {
+  margin-top: 2rem;
+}
+#reservations-ul:empty {
+  display: none;
+}
+#rooms-form {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+#today-date {
+  width: fit-content;
+  margin: 0 auto 2rem auto;
+  font-size: 3rem;
+}
