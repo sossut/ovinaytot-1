@@ -54,6 +54,7 @@ const getReservations = (today, room) => {
     //   }
     for (const item of result.reservations) {
       const li = document.createElement("li");
+
       li.innerHTML = item.subject;
       reservationsUl.appendChild(li);
     }
