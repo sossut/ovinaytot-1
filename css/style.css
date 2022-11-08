@@ -35,3 +35,7 @@ html {
   margin: 0 auto 2rem auto;
   font-size: 3rem;
 }
+ #date-div {
+  display: flex;
+  
+ }
