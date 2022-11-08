@@ -16,7 +16,7 @@ const date = new Date();
 let selectedDay = date;
 
 const splitDate = (date) => {
-  return date.toLocaleString("sv").split(" ")[0].replaceAll("/", "-");
+  return date.toLocaleDateString("sv");
 };
 //hakee Karaportin kaikki huoneet
 const getRooms = async () => {
