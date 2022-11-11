@@ -45,6 +45,7 @@ const getRooms = async () => {
 
 //hakee päivän varaukset valitulle tilalle
 const getReservations = async (date, room) => {
+  dayGrid.innerHTML = "";
   const response = await fetch(proxy + url, {
     method: "POST",
     headers: {
@@ -91,7 +92,6 @@ const convertToGrid = (item) => {
 };
 
 roomsForm.addEventListener("submit", (e) => {
-  dayGrid.innerHTML = "";
   e.preventDefault();
   if (roomsSelect[roomsSelect.selectedIndex] != 0) {
     let room = roomsSelect[roomsSelect.selectedIndex].value;
@@ -105,16 +105,12 @@ yesterdayButton.onclick = () => {
   const yesterday = new Date(date.setDate(date.getDate() - 1));
   selectedDay = yesterday;
 
-  dayGrid.innerHTML = "";
-
   getReservations(splitDate(yesterday), selectedRoom);
   displayDate(yesterday);
 };
 tomorrowButton.onclick = () => {
   const tomorrow = new Date(date.setDate(date.getDate() + 1));
   selectedDay = tomorrow;
-
-  dayGrid.innerHTML = "";
 
   getReservations(splitDate(tomorrow), selectedRoom);
   displayDate(tomorrow);
