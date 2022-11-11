@@ -1,0 +1,141 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>whatever</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/calendar.css" />
+  </head>
+  <body dir="rtl">
+    <div class="dayview-container">
+      <div class="dayview-timestrings-container">
+        <div class="dayview-timestrings">
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">07:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">08:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">09:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">10:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">11:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">12:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">13:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">14:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">15:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">16:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">17:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">18:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">19:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">20:00</div>
+          </div>
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">21:00</div>
+          </div>
+        </div>
+      </div>
+      <div class="dayview-grid-container">
+        <div class="dayview-grid">
+          <div class="dayview-grid-tiles">
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+          </div>
+          <div class="dayview-now-marker"></div>
+          <div class="dayview-grid-marker-start"></div>
+          <div class="dayview-gridcell-container">
+            <div class="dayview-gridcell">
+              <div
+                class="dayview-cell dayview-cell-extended"
+                style="grid-row: 1 / 7"
+              >
+                <div class="dayview-cell-title">Title</div>
+                <div class="dayview-cell-time">17:00-18:00</div>
+                <div class="dayview-cell-desc">Description</div>
+              </div>
+              <div
+                class="dayview-cell dayview-cell-extended"
+                style="grid-row: 7 / 91"
+              >
+                <div class="dayview-cell-title">Title</div>
+                <div class="dayview-cell-time">17:00-18:00</div>
+                <div class="dayview-cell-desc">Description</div>
+              </div>
+            </div>
+          </div>
+          <div class="dayview-grid-marker-end"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // assumes post DomContentLoaded
+      document.addEventListener("DOMContentLoaded", () => {
+        const d = new Date();
+        const hours = d.getHours();
+        const minutes = d.getMinutes();
+        let markerSpot;
+
+        const containerHeight = document.querySelector(
+          ".dayview-gridcell-container"
+        ).clientHeight;
+        if (hours < 7 || hours > 22) {
+          markerSpot = 0;
+        } else {
+          markerSpot = (hours - 7 + minutes / 60) / 15;
+        }
+        console.log(containerHeight);
+        console.log(markerSpot);
+
+        if (hours < 7) {
+          document.querySelector(".dayview-now-marker").style.top = 0 + "px";
+        } else if (hours > 22) {
+          document.querySelector(".dayview-now-marker").style.bottom = 1 + "px";
+        } else {
+          document.querySelector(".dayview-now-marker").style.top =
+            document.querySelector(".dayview-gridcell-container").clientHeight *
+              markerSpot +
+            "px";
+        }
+      });
+    </script>
+  </body>
+</html>

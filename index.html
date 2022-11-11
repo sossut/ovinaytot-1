@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/calendar.css" />
     <script defer src="js/script.js"></script>
+    <script defer src="js/clockmarker.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -29,6 +32,103 @@
         <input type="submit" value="Valitse" />
       </form>
       <ul id="reservations-ul"></ul>
+      <div id="calendar-div" dir="rtl">
+        <div class="dayview-container">
+          <div class="dayview-timestrings-container">
+            <div class="dayview-timestrings">
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">07:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">08:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">09:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">10:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">11:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">12:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">13:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">14:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">15:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">16:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">17:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">18:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">19:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">20:00</div>
+              </div>
+              <div class="dayview-timestring-container">
+                <div class="dayview-timestring">21:00</div>
+              </div>
+            </div>
+          </div>
+          <div class="dayview-grid-container">
+            <div class="dayview-grid">
+              <div class="dayview-grid-tiles">
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+                <div class="dayview-grid-tile"></div>
+              </div>
+              <div class="dayview-now-marker"></div>
+              <div class="dayview-grid-marker-start"></div>
+              <div class="dayview-gridcell-container">
+                <div class="dayview-gridcell">
+                  <div
+                    class="dayview-cell dayview-cell-extended"
+                    style="grid-row: 1 / 7"
+                  >
+                    <div class="dayview-cell-title">Title</div>
+                    <div class="dayview-cell-time">17:00-18:00</div>
+                    <div class="dayview-cell-desc">Description</div>
+                  </div>
+                  <div
+                    class="dayview-cell dayview-cell-extended"
+                    style="grid-row: 7 / 91"
+                  >
+                    <div class="dayview-cell-title">Title</div>
+                    <div class="dayview-cell-time">17:00-18:00</div>
+                    <div class="dayview-cell-desc">Description</div>
+                  </div>
+                </div>
+              </div>
+              <div class="dayview-grid-marker-end"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
   </body>
 </html>
