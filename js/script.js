@@ -6,9 +6,11 @@ const proxy = "https://salty-ocean-03856.herokuapp.com/";
 
 const roomsSelect = document.querySelector("#rooms");
 const roomsForm = document.querySelector("#rooms-form");
-const reservationsUl = document.querySelector("#reservations-ul");
+
 const yesterdayButton = document.querySelector("#yesterday");
 const tomorrowButton = document.querySelector("#tomorrow");
+const dayGrid = document.querySelector(".dayview-gridcell");
+
 let selectedRoom;
 
 const date = new Date();
@@ -41,6 +43,7 @@ const getRooms = async () => {
   }
 };
 
+//hakee päivän varaukset valitulle tilalle
 const getReservations = async (date, room) => {
   const response = await fetch(proxy + url, {
     method: "POST",
@@ -53,27 +56,56 @@ const getReservations = async (date, room) => {
   const result = await response.json();
 
   for (const item of result.reservations) {
-    const li = document.createElement("li");
-    li.innerHTML = item.subject;
-    reservationsUl.appendChild(li);
+    const cell = document.createElement("div");
+    cell.classList.add("dayview-cell", "dayview-cell-extended");
+
+    const converted = convertToGrid(item);
+    cell.style.gridRow = `${converted.start} / ${converted.end}`;
+
+    const cellTitle = document.createElement("div");
+    cellTitle.classList.add("dayview-cell-title");
+    cellTitle.innerHTML = item.subject;
+
+    const cellTime = document.createElement("div");
+    cellTime.classList.add("dayview-cell-time");
+    const start = item.startDate.split("T")[1].slice(0, 5);
+    const end = item.endDate.split("T")[1].slice(0, 5);
+    cellTime.innerHTML = `${end} - ${start}`; // en tiiä miks tulee väärinpäin ?
+
+    dayGrid.appendChild(cell);
+    cell.appendChild(cellTime);
+    cell.appendChild(cellTitle);
   }
   console.log("getReservations", result);
 };
 
+const convertToGrid = (item) => {
+  const startHours = parseInt(item.startDate.split("T")[1].slice(0, 2));
+  const startMinutes = parseInt(item.startDate.split("T")[1].slice(3, 5));
+  const endHours = parseInt(item.endDate.split("T")[1].slice(0, 2));
+  const endMinutes = parseInt(item.endDate.split("T")[1].slice(3, 5));
+  const start = (startHours - 7 + startMinutes / 60) * 60 + 1;
+  const end = (endHours - 7 + endMinutes / 60) * 60 + 1;
+  console.log(end);
+  return { start, end };
+};
+
 roomsForm.addEventListener("submit", (e) => {
-  reservationsUl.innerHTML = "";
+  dayGrid.innerHTML = "";
   e.preventDefault();
-  let room = roomsSelect[roomsSelect.selectedIndex].value;
-  selectedRoom = room;
-  console.log(room);
-  getReservations(splitDate(selectedDay), room);
+  if (roomsSelect[roomsSelect.selectedIndex] != 0) {
+    let room = roomsSelect[roomsSelect.selectedIndex].value;
+    selectedRoom = room;
+    console.log(room);
+    getReservations(splitDate(selectedDay), room);
+  }
 });
 
 yesterdayButton.onclick = () => {
   const yesterday = new Date(date.setDate(date.getDate() - 1));
   selectedDay = yesterday;
 
-  reservationsUl.innerHTML = "";
+  dayGrid.innerHTML = "";
 
   getReservations(splitDate(yesterday), selectedRoom);
   displayDate(yesterday);
@@ -82,7 +114,7 @@ tomorrowButton.onclick = () => {
   const tomorrow = new Date(date.setDate(date.getDate() + 1));
   selectedDay = tomorrow;
 
-  reservationsUl.innerHTML = "";
+  dayGrid.innerHTML = "";
 
   getReservations(splitDate(tomorrow), selectedRoom);
   displayDate(tomorrow);
