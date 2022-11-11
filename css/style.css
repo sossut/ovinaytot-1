@@ -2,7 +2,7 @@ html {
   margin: auto;
   padding: 0;
   background-color: whitesmoke;
-  width: 50%;
+  max-width: 75%;
   font-family: "Roboto", sans-serif;
 }
 #reservations-ul {

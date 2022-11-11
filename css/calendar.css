@@ -155,7 +155,7 @@ body {
 .dayview-cell {
     padding: 3px;
     color: white;
-    font-size: 12px;
+    font-size:1rem;
     display: block;
 }
 
