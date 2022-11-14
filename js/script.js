@@ -9,6 +9,8 @@ const roomsForm = document.querySelector("#rooms-form");
 
 const yesterdayButton = document.querySelector("#yesterday");
 const tomorrowButton = document.querySelector("#tomorrow");
+const todayButton = document.querySelector("#today");
+
 const dayGrid = document.querySelector(".dayview-gridcell");
 
 let selectedRoom;
@@ -114,6 +116,13 @@ tomorrowButton.onclick = () => {
 
   getReservations(splitDate(tomorrow), selectedRoom);
   displayDate(tomorrow);
+};
+todayButton.onclick = () => {
+  const today = new Date();
+  selectedDay = today;
+
+  getReservations(splitDate(today), selectedRoom);
+  displayDate(today);
 };
 
 const displayDate = (date) => {
