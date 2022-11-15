@@ -104,14 +104,14 @@ roomsForm.addEventListener("submit", (e) => {
 });
 
 yesterdayButton.onclick = () => {
-  const yesterday = new Date(date.setDate(date.getDate() - 1));
+  const yesterday = new Date(selectedDay.setDate(selectedDay.getDate() - 1));
   selectedDay = yesterday;
 
   getReservations(splitDate(yesterday), selectedRoom);
   displayDate(yesterday);
 };
 tomorrowButton.onclick = () => {
-  const tomorrow = new Date(date.setDate(date.getDate() + 1));
+  const tomorrow = new Date(selectedDay.setDate(selectedDay.getDate() + 1));
   selectedDay = tomorrow;
 
   getReservations(splitDate(tomorrow), selectedRoom);
