@@ -20,4 +20,4 @@ const moveMarker = () => {
   }
 };
 
-setInterval(moveMarker, 1000);
+export { moveMarker };

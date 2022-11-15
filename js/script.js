@@ -1,5 +1,8 @@
 "use strict";
 
+import { moveMarker } from "./clockmarker.js";
+const WorkerTimer = require("worker-timers");
+
 const apiKey = "PNWqQ8p6R5sWevhU4Hu0";
 const url = "https://opendata.metropolia.fi/r1/reservation/search";
 const proxy = "https://salty-ocean-03856.herokuapp.com/";
@@ -132,3 +135,4 @@ const displayDate = (date) => {
 };
 displayDate(date);
 getRooms();
+WorkerTimer.setInterval(moveMarker, 1000);
