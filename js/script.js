@@ -27,6 +27,10 @@ const date = new Date();
 
 let selectedDay = date;
 
+const queryString = document.location.search;
+const urlParams = new URLSearchParams(queryString);
+selectedRoom = urlParams.get("room");
+
 const splitDate = (date) => {
   return date.toLocaleDateString("sv");
 };
@@ -148,5 +152,6 @@ const displayDate = (date) => {
 };
 displayDate(date);
 getRooms();
+getReservations(splitDate(date), selectedRoom);
 setInterval(moveMarker, 1000);
 setInterval(check, 1000);
