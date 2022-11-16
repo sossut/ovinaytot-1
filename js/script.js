@@ -59,6 +59,7 @@ const getRooms = async () => {
 
 //hakee päivän varaukset valitulle tilalle
 const getReservations = async (date, room) => {
+  displayRoom(room);
   dayGrid.innerHTML = "";
   const response = await fetch(proxy + url, {
     method: "POST",
@@ -150,7 +151,12 @@ const displayDate = (date) => {
   const todayDate = date.toDateString();
   document.getElementById("today-date").innerHTML = todayDate;
 };
+const displayRoom = (room) => {
+  document.querySelector("#room").innerHTML = "";
+  document.querySelector("#room").innerHTML = room;
+};
 displayDate(date);
+displayRoom(selectedRoom);
 getRooms();
 getReservations(splitDate(date), selectedRoom);
 setInterval(moveMarker, 1000);
