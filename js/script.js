@@ -1,8 +1,13 @@
 "use strict";
 
 import { moveMarker } from "./clockmarker.js";
-const WorkerTimer = require("worker-timers");
 
+import {
+  clearInterval,
+  clearTimeout,
+  setInterval,
+  setTimeout,
+} from "worker-timers";
 const apiKey = "PNWqQ8p6R5sWevhU4Hu0";
 const url = "https://opendata.metropolia.fi/r1/reservation/search";
 const proxy = "https://salty-ocean-03856.herokuapp.com/";
@@ -85,6 +90,14 @@ const getReservations = async (date, room) => {
   console.log("getReservations", result);
 };
 
+const check = () => {
+  const newDate = new Date();
+  if (newDate.getHours() == 0 && newDate.getMinutes() == 0) {
+    displayDate(newDate);
+    getReservations(splitDate(newDate), selectedRoom);
+  }
+};
+
 const convertToGrid = (item) => {
   const startHours = parseInt(item.startDate.split("T")[1].slice(0, 2));
   const startMinutes = parseInt(item.startDate.split("T")[1].slice(3, 5));
@@ -135,4 +148,5 @@ const displayDate = (date) => {
 };
 displayDate(date);
 getRooms();
-WorkerTimer.setInterval(moveMarker, 1000);
+setInterval(moveMarker, 1000);
+setInterval(check, 1000);
