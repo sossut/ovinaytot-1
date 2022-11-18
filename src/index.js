@@ -1,6 +1,8 @@
 "use strict";
 
-import { moveMarker } from "./clockmarker.js";
+import { moveMarker } from "./modules/clockmarker.js";
+import Calendar from "color-calendar";
+import "color-calendar/dist/css/theme-glass.css";
 
 import {
   clearInterval,
@@ -26,7 +28,7 @@ let selectedRoom;
 const date = new Date();
 
 let selectedDay = date;
-
+let first = true;
 const queryString = document.location.search;
 const urlParams = new URLSearchParams(queryString);
 selectedRoom = urlParams.get("room");
@@ -127,22 +129,22 @@ roomsForm.addEventListener("submit", (e) => {
 yesterdayButton.onclick = () => {
   const yesterday = new Date(selectedDay.setDate(selectedDay.getDate() - 1));
   selectedDay = yesterday;
-
-  getReservations(splitDate(yesterday), selectedRoom);
+  calendar.setDate(selectedDay);
+  // getReservations(splitDate(yesterday), selectedRoom);
   displayDate(yesterday);
 };
 tomorrowButton.onclick = () => {
   const tomorrow = new Date(selectedDay.setDate(selectedDay.getDate() + 1));
   selectedDay = tomorrow;
-
-  getReservations(splitDate(tomorrow), selectedRoom);
+  calendar.setDate(selectedDay);
+  // getReservations(splitDate(tomorrow), selectedRoom);
   displayDate(tomorrow);
 };
 todayButton.onclick = () => {
   const today = new Date();
   selectedDay = today;
-
-  getReservations(splitDate(today), selectedRoom);
+  calendar.setDate(selectedDay);
+  // getReservations(splitDate(today), selectedRoom);
   displayDate(today);
 };
 
@@ -155,6 +157,30 @@ const displayRoom = (room) => {
   document.querySelector("#room").innerHTML = "";
   document.querySelector("#room").innerHTML = room;
 };
+
+let calendar = new Calendar({
+  id: "#color-calendar",
+  primaryColor: "#6670bf",
+  theme: "glass",
+  border: "5px solid #6670bf",
+  weekdayType: "long-upper",
+  monthDisplayType: "long",
+  headerColor: "white",
+  headerBackgroundColor: "#6670bf",
+  calendarSize: "small",
+  layoutModifiers: ["month-left-align"],
+
+  dateChanged: (currentDate) => {
+    displayDate(currentDate);
+    if (!first) {
+      getReservations(splitDate(currentDate), selectedRoom);
+    }
+    first = false;
+    selectedDay = currentDate;
+  },
+  monthChanged: (currentDate) => {},
+});
+
 displayDate(date);
 displayRoom(selectedRoom);
 getRooms();

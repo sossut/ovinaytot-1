@@ -1,14 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/calendar.css" />
-    <script defer src="./dist/bundle.js"></script>
+    <meta charset="utf-8" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link rel="stylesheet" href="assets/style.css" />
+    <link rel="stylesheet" href="assets/calendar.css" />
 
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -24,6 +29,7 @@
         <button id="tomorrow">Huomenna</button>
         <div id="today-date"></div>
         <div id="room"></div>
+        <div id="color-calendar"></div>
       </div>
 
       <div id="room-test"></div>
@@ -109,24 +115,7 @@
               <div class="dayview-now-marker"></div>
               <div class="dayview-grid-marker-start"></div>
               <div class="dayview-gridcell-container">
-                <div class="dayview-gridcell">
-                  <!-- <div
-                    class="dayview-cell dayview-cell-extended"
-                    style="grid-row: 1 / 4"
-                  >
-                    <div class="dayview-cell-title">Title</div>
-                    <div class="dayview-cell-time">17:00-18:00</div>
-                    <div class="dayview-cell-desc">Description</div>
-                  </div> -->
-                  <!-- <div
-                    class="dayview-cell dayview-cell-extended"
-                    style="grid-row: 121 / 901"
-                  >
-                    <div class="dayview-cell-title">Title</div>
-                    <div class="dayview-cell-time">17:00-18:00</div>
-                    <div class="dayview-cell-desc">Description</div>
-                  </div> -->
-                </div>
+                <div class="dayview-gridcell"></div>
               </div>
               <div class="dayview-grid-marker-end"></div>
             </div>
