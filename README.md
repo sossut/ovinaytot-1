@@ -1,4 +1,4 @@
-# WTMP Starter
+# Webpack Starter
 
 Simple boilerplate for [Webpack](https://webpack.js.org/guides/getting-started) powered web development exercises.
 
