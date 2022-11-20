@@ -27,22 +27,101 @@ html {
 }
 #rooms-form {
   width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 2rem auto 2rem auto;
 }
 #today-date {
   width: fit-content;
   margin: 0 auto 2rem auto;
   font-size: 3rem;
 }
- #date-div {
+#date-div {
   display: flex;
-  
- }
- #caledar-div {
+  margin: auto auto 2rem auto;
+}
+#caledar-div {
   font-family: Roboto, Helvetica, Arial, sans-serif;
-    padding: 25px;
-    max-width: 100vw;
-    box-sizing: border-box;
-    background-color: whitesmoke;
- }
+  padding: 25px;
+  max-width: 100vw;
+  box-sizing: border-box;
+  background-color: whitesmoke;
+}
+#date-room {
+  margin: 0 auto 0 auto;
+  width: 50%;
+}
+#month-view {
+  float: right;
+}
+#date-buttons {
+  width: fit-content;
+  margin: 2rem auto auto auto;
+}
+#room {
+  width: fit-content;
+  margin: 0 auto 0 auto;
+  font-size: 2rem;
+}
+#date-buttons button {
+  margin: 0 2rem 0 2rem;
+  padding: 1rem;
+  font-size: 1rem;
+}
+#toggle-calendar {
+  margin-bottom: 1rem;
+  float: right;
+}
+
+/* kännykälle sopivat setit */
+@media screen and (max-width: 600px) {
+  html {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  body {
+    padding: 0;
+    margin: 0;
+  }
+  #date-div {
+    display: block;
+  }
+  #date-room {
+    width: 100%;
+  }
+  #date-buttons {
+    display: flex;
+    width: fit-content;
+    margin: 1rem auto 1rem auto;
+  }
+  #date-buttons button {
+    padding: 3%;
+    margin: 0;
+    font-size: smaller;
+    width: 100%;
+  }
+  #date-buttons button:not(:last-child) {
+    margin-right: 1rem;
+  }
+  #today-date {
+    font-size: 2rem;
+    margin: 0 auto 0 auto;
+  }
+  #rooms-form {
+    width: fit-content;
+    margin: 1rem auto 1rem auto;
+  }
+  /* nappula ja kuukausikalenteri pitää kikkailla johonkin väliin */
+  #color-calendar {
+    display: none;
+  }
+  #toggle-calendar {
+    display: none;
+  }
+  /* */
+  #calendar-div {
+    margin-top: 2rem;
+    padding: 0;
+    width: 100%;
+  }
+}

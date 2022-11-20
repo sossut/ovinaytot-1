@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= htmlWebpackPlugin.options.title %></title>
     <link rel="stylesheet" href="assets/style.css" />
     <link rel="stylesheet" href="assets/calendar.css" />
@@ -24,23 +25,29 @@
   <body>
     <main>
       <div id="date-div">
-        <button id="yesterday">Eilen</button>
-        <button id="today">Tänään</button>
-        <button id="tomorrow">Huomenna</button>
-        <div id="today-date"></div>
-        <div id="room"></div>
-        <div id="color-calendar"></div>
+        <div id="date-room">
+          <div id="today-date"></div>
+          <form id="rooms-form">
+            <label for="rooms">Valitse Huone:</label>
+            <select name="rooms" id="rooms">
+              <option></option>
+            </select>
+
+            <input type="submit" value="Valitse" />
+          </form>
+          <div id="room"></div>
+          <div id="date-buttons">
+            <button id="yesterday">Eilen</button>
+            <button id="today">Tänään</button>
+            <button id="tomorrow">Huomenna</button>
+          </div>
+        </div>
+        <div id="month-view">
+          <button id="toggle-calendar"></button>
+          <div id="color-calendar"></div>
+        </div>
       </div>
 
-      <div id="room-test"></div>
-      <form id="rooms-form">
-        <label for="rooms">Valitse Huone:</label>
-        <select name="rooms" id="rooms">
-          <option></option>
-        </select>
-
-        <input type="submit" value="Valitse" />
-      </form>
       <ul id="reservations-ul"></ul>
       <div id="calendar-div" dir="rtl">
         <div class="dayview-container">

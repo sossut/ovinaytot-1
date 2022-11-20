@@ -181,6 +181,18 @@ let calendar = new Calendar({
   monthChanged: (currentDate) => {},
 });
 
+const hideCalendar = document.getElementById("color-calendar");
+const hideButton = document.getElementById("toggle-calendar");
+document.getElementById("toggle-calendar").innerHTML =
+  "Näytä/Piilota kalenteri";
+hideButton.onclick = () => {
+  if (hideCalendar.style.display !== "none") {
+    hideCalendar.style.display = "none";
+  } else {
+    hideCalendar.style.display = "block";
+  }
+};
+
 displayDate(date);
 displayRoom(selectedRoom);
 getRooms();
