@@ -33,28 +33,109 @@ const queryString = document.location.search;
 const urlParams = new URLSearchParams(queryString);
 selectedRoom = urlParams.get("room");
 
+// const putSomeData = async (storename, obj) => {
+//   let indexedDB =
+//     window.indexedDB ||
+//     window.mozIndexedDB ||
+//     window.webkitIndexedDB ||
+//     window.msIndexedDB;
+
+//   let open = indexedDB.open("ReservationsDB", 1);
+
+//   open.onupgradeneeded = () => {
+//     let db = open.result;
+//     const stores = db.objectStoreNames;
+
+//     if (!stores.contains("rooms")) {
+//       const store = db.createObjectStore("rooms", {
+//         keyPath: "code",
+//         autoIncrement: true,
+//       });
+
+//       store.createIndex("code", "code", { unique: true });
+//     }
+//     if (!stores.contains("reservations")) {
+//       const store1 = db.createObjectStore("reservations", {
+//         keyPath: "id",
+//       });
+//       store1.createIndex("id", "id", { unique: true });
+//     }
+//   };
+
+//   open.onsuccess = () => {
+//     let db = open.result;
+//     let tx = db.transaction(storename, "readwrite");
+//     let store = tx.objectStore(storename);
+
+//     store.put(obj);
+
+//     tx.oncomplete = () => {
+//       db.close();
+//     };
+//   };
+// };
+// const getDataFromIDDB = async (storename) => {
+//   let indexedDB =
+//     window.indexedDB ||
+//     window.mozIndexedDB ||
+//     window.webkitIndexedDB ||
+//     window.msIndexedDB;
+
+//   let open = indexedDB.open("ReservationsDB", 1);
+//   open.onsuccess = () => {
+//     let db = open.result;
+//     let tx = db.transaction([storename], "readonly");
+//     let store = tx.objectStore(storename);
+//     const storeRequest = store.getAll();
+//     storeRequest.onsuccess = () => {
+//       const data = storeRequest.result;
+//       console.log(data);
+//     };
+//   };
+// };
+
 const splitDate = (date) => {
   return date.toLocaleDateString("sv");
 };
 //hakee Karaportin kaikki huoneet
 const getRooms = async () => {
-  const response = await fetch(
-    proxy + "https://opendata.metropolia.fi/r1/reservation/building/78025",
-    {
-      headers: {
-        Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
-      },
+  if (!localStorage.getItem("rooms")) {
+    try {
+      const response = await fetch(
+        proxy + "https://opendata.metropolia.fi/r1/reservation/building/78025",
+        {
+          headers: {
+            Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
+          },
+        }
+      );
+      const result = await response.json();
+      console.log("getRooms", result);
+      const rooms = JSON.stringify(result.resources);
+      localStorage.setItem("rooms", rooms);
+      for (const item of result.resources) {
+        const option = document.createElement("option");
+        if (item.type === "room") {
+          // putSomeData("rooms", item);
+          option.innerHTML = item.code;
+          option.value = item.code;
+          roomsSelect.appendChild(option);
+        }
+      }
+    } catch (error) {
+      console.error(error);
     }
-  );
-  const result = await response.json();
-  console.log("getRooms", result);
+  } else {
+    const result = JSON.parse(localStorage.getItem("rooms"));
 
-  for (const item of result.resources) {
-    const option = document.createElement("option");
-    if (item.type === "room") {
-      option.innerHTML = item.code;
-      option.value = item.code;
-      roomsSelect.appendChild(option);
+    for (const item of result) {
+      const option = document.createElement("option");
+      if (item.type === "room") {
+        // putSomeData("rooms", item);
+        option.innerHTML = item.code;
+        option.value = item.code;
+        roomsSelect.appendChild(option);
+      }
     }
   }
 };
@@ -63,38 +144,71 @@ const getRooms = async () => {
 const getReservations = async (date, room) => {
   displayRoom(room);
   dayGrid.innerHTML = "";
-  const response = await fetch(proxy + url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
-    },
-    body: `{\n   "startDate":"${date}T00:00",\n   "endDate":"${date}T23:59",\n   "room":["${room}"]\n}`,
-  });
-  const result = await response.json();
+  if (!localStorage.getItem(date + room)) {
+    try {
+      const response = await fetch(proxy + url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
+        },
+        body: `{\n   "startDate":"${date}T00:00",\n   "endDate":"${date}T23:59",\n   "room":["${room}"]\n}`,
+      });
+      const result = await response.json();
+      const reservations = JSON.stringify(result.reservations);
+      for (const item of result.reservations) {
+        localStorage.setItem(date + room, reservations);
+        putSomeData("reservations", item);
+        const cell = document.createElement("div");
+        cell.classList.add("dayview-cell", "dayview-cell-extended");
 
-  for (const item of result.reservations) {
-    const cell = document.createElement("div");
-    cell.classList.add("dayview-cell", "dayview-cell-extended");
+        const converted = convertToGrid(item);
+        cell.style.gridRow = `${converted.start} / ${converted.end}`;
 
-    const converted = convertToGrid(item);
-    cell.style.gridRow = `${converted.start} / ${converted.end}`;
+        const cellTitle = document.createElement("div");
+        cellTitle.classList.add("dayview-cell-title");
+        cellTitle.innerHTML = item.subject;
 
-    const cellTitle = document.createElement("div");
-    cellTitle.classList.add("dayview-cell-title");
-    cellTitle.innerHTML = item.subject;
+        const cellTime = document.createElement("div");
+        cellTime.classList.add("dayview-cell-time");
+        const start = item.startDate.split("T")[1].slice(0, 5);
+        const end = item.endDate.split("T")[1].slice(0, 5);
+        cellTime.innerHTML = `${end} - ${start}`; // en tiiä miks tulee väärinpäin ?
 
-    const cellTime = document.createElement("div");
-    cellTime.classList.add("dayview-cell-time");
-    const start = item.startDate.split("T")[1].slice(0, 5);
-    const end = item.endDate.split("T")[1].slice(0, 5);
-    cellTime.innerHTML = `${end} - ${start}`; // en tiiä miks tulee väärinpäin ?
+        dayGrid.appendChild(cell);
+        cell.appendChild(cellTime);
+        cell.appendChild(cellTitle);
+      }
+      console.log("getReservations", result);
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    const result = JSON.parse(localStorage.getItem(date + room));
 
-    dayGrid.appendChild(cell);
-    cell.appendChild(cellTime);
-    cell.appendChild(cellTitle);
+    for (const item of result) {
+      putSomeData("reservations", item);
+      const cell = document.createElement("div");
+      cell.classList.add("dayview-cell", "dayview-cell-extended");
+
+      const converted = convertToGrid(item);
+      cell.style.gridRow = `${converted.start} / ${converted.end}`;
+
+      const cellTitle = document.createElement("div");
+      cellTitle.classList.add("dayview-cell-title");
+      cellTitle.innerHTML = item.subject;
+
+      const cellTime = document.createElement("div");
+      cellTime.classList.add("dayview-cell-time");
+      const start = item.startDate.split("T")[1].slice(0, 5);
+      const end = item.endDate.split("T")[1].slice(0, 5);
+      cellTime.innerHTML = `${end} - ${start}`; // en tiiä miks tulee väärinpäin ?
+
+      dayGrid.appendChild(cell);
+      cell.appendChild(cellTime);
+      cell.appendChild(cellTitle);
+    }
   }
-  console.log("getReservations", result);
 };
 
 const check = () => {
@@ -112,7 +226,7 @@ const convertToGrid = (item) => {
   const endMinutes = parseInt(item.endDate.split("T")[1].slice(3, 5));
   const start = (startHours - 7 + startMinutes / 60) * 60 + 1;
   const end = (endHours - 7 + endMinutes / 60) * 60 + 1;
-  console.log(end);
+
   return { start, end };
 };
 
@@ -192,17 +306,18 @@ hideButton.onclick = () => {
     hideCalendar.style.display = "block";
   }
 };
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js').then(registration => {
-      console.log('SW registered: ', registration);
-    }).catch(registrationError => {
-      console.log('SW registration failed: ', registrationError);
-    });
-  });
-};
-
+// if ("serviceWorker" in navigator) {
+//   window.addEventListener("load", () => {
+//     navigator.serviceWorker
+//       .register("/service-worker.js")
+//       .then((registration) => {
+//         console.log("SW registered: ", registration);
+//       })
+//       .catch((registrationError) => {
+//         console.log("SW registration failed: ", registrationError);
+//       });
+//   });
+// }
 displayDate(date);
 displayRoom(selectedRoom);
 getRooms();
