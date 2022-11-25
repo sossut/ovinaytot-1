@@ -187,7 +187,7 @@ const getReservations = async (date, room) => {
     const result = JSON.parse(localStorage.getItem(date + room));
 
     for (const item of result) {
-      putSomeData("reservations", item);
+      // putSomeData("reservations", item);
       const cell = document.createElement("div");
       cell.classList.add("dayview-cell", "dayview-cell-extended");
 
