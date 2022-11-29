@@ -4,12 +4,7 @@ import { moveMarker } from "./modules/clockmarker.js";
 import Calendar from "color-calendar";
 import "color-calendar/dist/css/theme-glass.css";
 
-import {
-  clearInterval,
-  clearTimeout,
-  setInterval,
-  setTimeout,
-} from "worker-timers";
+import { setInterval } from "worker-timers";
 const apiKey = "PNWqQ8p6R5sWevhU4Hu0";
 const url = "https://opendata.metropolia.fi/r1/reservation/search";
 const proxy = "https://salty-ocean-03856.herokuapp.com/";
@@ -22,7 +17,8 @@ const tomorrowButton = document.querySelector("#tomorrow");
 const todayButton = document.querySelector("#today");
 
 const dayGrid = document.querySelector(".dayview-gridcell");
-
+const updated = document.querySelector("#last-updated");
+const updateButton = document.querySelector("#update");
 let selectedRoom;
 
 const date = new Date();
@@ -33,72 +29,29 @@ const queryString = document.location.search;
 const urlParams = new URLSearchParams(queryString);
 selectedRoom = urlParams.get("room");
 
-// const putSomeData = async (storename, obj) => {
-//   let indexedDB =
-//     window.indexedDB ||
-//     window.mozIndexedDB ||
-//     window.webkitIndexedDB ||
-//     window.msIndexedDB;
-
-//   let open = indexedDB.open("ReservationsDB", 1);
-
-//   open.onupgradeneeded = () => {
-//     let db = open.result;
-//     const stores = db.objectStoreNames;
-
-//     if (!stores.contains("rooms")) {
-//       const store = db.createObjectStore("rooms", {
-//         keyPath: "code",
-//         autoIncrement: true,
-//       });
-
-//       store.createIndex("code", "code", { unique: true });
-//     }
-//     if (!stores.contains("reservations")) {
-//       const store1 = db.createObjectStore("reservations", {
-//         keyPath: "id",
-//       });
-//       store1.createIndex("id", "id", { unique: true });
-//     }
-//   };
-
-//   open.onsuccess = () => {
-//     let db = open.result;
-//     let tx = db.transaction(storename, "readwrite");
-//     let store = tx.objectStore(storename);
-
-//     store.put(obj);
-
-//     tx.oncomplete = () => {
-//       db.close();
-//     };
-//   };
-// };
-// const getDataFromIDDB = async (storename) => {
-//   let indexedDB =
-//     window.indexedDB ||
-//     window.mozIndexedDB ||
-//     window.webkitIndexedDB ||
-//     window.msIndexedDB;
-
-//   let open = indexedDB.open("ReservationsDB", 1);
-//   open.onsuccess = () => {
-//     let db = open.result;
-//     let tx = db.transaction([storename], "readonly");
-//     let store = tx.objectStore(storename);
-//     const storeRequest = store.getAll();
-//     storeRequest.onsuccess = () => {
-//       const data = storeRequest.result;
-//       console.log(data);
-//     };
-//   };
-// };
+//jos hausta yli viikko poistetaan se localstoragesta
+const removeOldLocalStorage = () => {
+  for (let i = 0; i < localStorage.length; i++) {
+    if (
+      localStorage.getItem(localStorage.key(i)).slice(2, 14) ==
+        "reservations" &&
+      new Date() -
+        JSON.parse(localStorage.getItem(localStorage.key(i))).timestamp >
+        604800000
+    ) {
+      localStorage.removeItem(localStorage.key(i));
+    }
+  }
+};
 
 const splitDate = (date) => {
   return date.toLocaleDateString("sv");
 };
 //hakee Karaportin kaikki huoneet
+//jos edellisesti hausta yli viikko haetaan huoneet uudestaan
 const getRooms = async () => {
+  // ||
+  //   new Date() - JSON.parse(localStorage.getItem("rooms")).timestamp > 604800000
   if (!localStorage.getItem("rooms")) {
     try {
       const response = await fetch(
@@ -109,14 +62,15 @@ const getRooms = async () => {
           },
         }
       );
+
       const result = await response.json();
       console.log("getRooms", result);
-      const rooms = JSON.stringify(result.resources);
+      const obj = { rooms: result.resources, timestamp: new Date().getTime() };
+      const rooms = JSON.stringify(obj);
       localStorage.setItem("rooms", rooms);
       for (const item of result.resources) {
         const option = document.createElement("option");
         if (item.type === "room") {
-          // putSomeData("rooms", item);
           option.innerHTML = item.code;
           option.value = item.code;
           roomsSelect.appendChild(option);
@@ -128,10 +82,9 @@ const getRooms = async () => {
   } else {
     const result = JSON.parse(localStorage.getItem("rooms"));
 
-    for (const item of result) {
+    for (const item of result.rooms) {
       const option = document.createElement("option");
       if (item.type === "room") {
-        // putSomeData("rooms", item);
         option.innerHTML = item.code;
         option.value = item.code;
         roomsSelect.appendChild(option);
@@ -141,10 +94,11 @@ const getRooms = async () => {
 };
 
 //hakee päivän varaukset valitulle tilalle
-const getReservations = async (date, room) => {
+const getReservations = async (date, room, refresh = false) => {
+  date = splitDate(date);
   displayRoom(room);
   dayGrid.innerHTML = "";
-  if (!localStorage.getItem(date + room)) {
+  if (!localStorage.getItem(date + room) || refresh) {
     try {
       const response = await fetch(proxy + url, {
         method: "POST",
@@ -155,10 +109,15 @@ const getReservations = async (date, room) => {
         body: `{\n   "startDate":"${date}T00:00",\n   "endDate":"${date}T23:59",\n   "room":["${room}"]\n}`,
       });
       const result = await response.json();
-      const reservations = JSON.stringify(result.reservations);
+      const obj = {
+        reservations: result.reservations,
+        timestamp: new Date().getTime(),
+      };
+      const reservations = JSON.stringify(obj);
+      dayGrid.innerHTML = "";
       for (const item of result.reservations) {
         localStorage.setItem(date + room, reservations);
-        putSomeData("reservations", item);
+
         const cell = document.createElement("div");
         cell.classList.add("dayview-cell", "dayview-cell-extended");
 
@@ -185,9 +144,8 @@ const getReservations = async (date, room) => {
     }
   } else {
     const result = JSON.parse(localStorage.getItem(date + room));
-
-    for (const item of result) {
-      // putSomeData("reservations", item);
+    dayGrid.innerHTML = "";
+    for (const item of result.reservations) {
       const cell = document.createElement("div");
       cell.classList.add("dayview-cell", "dayview-cell-extended");
 
@@ -210,12 +168,36 @@ const getReservations = async (date, room) => {
     }
   }
 };
+const disable = (obj) => {
+  obj.disabled = true;
+  setTimeout(() => {
+    obj.disabled = false;
+  }, 500);
+};
+
+const renderTimestamp = () => {
+  updated.innerHTML = "";
+
+  if (localStorage.getItem(splitDate(selectedDay) + selectedRoom)) {
+    try {
+      const timestamp = new Date(
+        JSON.parse(
+          localStorage.getItem(splitDate(selectedDay) + selectedRoom)
+        ).timestamp
+      );
+      updated.innerHTML = timestamp;
+    } catch (error) {}
+  } else {
+    updated.innerHTML = new Date();
+  }
+};
 
 const check = () => {
   const newDate = new Date();
   if (newDate.getHours() == 0 && newDate.getMinutes() == 0) {
     displayDate(newDate);
-    getReservations(splitDate(newDate), selectedRoom);
+    getReservations(newDate, selectedRoom);
+    calendar.setDate(newDate);
   }
 };
 
@@ -236,9 +218,16 @@ roomsForm.addEventListener("submit", (e) => {
     let room = roomsSelect[roomsSelect.selectedIndex].value;
     selectedRoom = room;
     console.log(room);
-    getReservations(splitDate(selectedDay), room);
+    dayGrid.innerHTML = "";
+    getReservations(selectedDay, room);
   }
 });
+
+updateButton.onclick = () => {
+  localStorage.removeItem(splitDate(selectedDay) + selectedRoom);
+  getReservations(selectedDay, selectedRoom, true);
+  renderTimestamp();
+};
 
 yesterdayButton.onclick = () => {
   const yesterday = new Date(selectedDay.setDate(selectedDay.getDate() - 1));
@@ -287,7 +276,10 @@ let calendar = new Calendar({
   dateChanged: (currentDate) => {
     displayDate(currentDate);
     if (!first) {
-      getReservations(splitDate(currentDate), selectedRoom);
+      dayGrid.innerHTML = "";
+      getReservations(currentDate, selectedRoom);
+      removeOldLocalStorage();
+      renderTimestamp();
     }
     first = false;
     selectedDay = currentDate;
@@ -321,6 +313,8 @@ hideButton.onclick = () => {
 displayDate(date);
 displayRoom(selectedRoom);
 getRooms();
-getReservations(splitDate(date), selectedRoom);
+getReservations(date, selectedRoom);
 setInterval(moveMarker, 1000);
 setInterval(check, 1000);
+removeOldLocalStorage();
+renderTimestamp();
