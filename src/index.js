@@ -47,6 +47,7 @@ const removeOldLocalStorage = () => {
 const splitDate = (date) => {
   return date.toLocaleDateString("sv");
 };
+
 //hakee Karaportin kaikki huoneet
 //jos edellisesti hausta yli viikko haetaan huoneet uudestaan
 const getRooms = async () => {
@@ -184,11 +185,11 @@ const renderTimestamp = () => {
         JSON.parse(
           localStorage.getItem(splitDate(selectedDay) + selectedRoom)
         ).timestamp
-      );
+      ).toLocaleString("fi-FI", { hour12: false });
       updated.innerHTML = timestamp;
     } catch (error) {}
   } else {
-    updated.innerHTML = new Date();
+    updated.innerHTML = new Date().toLocaleString("fi-FI", { hour12: false });
   }
 };
 
