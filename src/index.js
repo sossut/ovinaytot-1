@@ -94,6 +94,28 @@ const getRooms = async () => {
   }
 };
 
+const renderReservations = (item) => {
+  const cell = document.createElement("div");
+  cell.classList.add("dayview-cell", "dayview-cell-extended");
+
+  const converted = convertToGrid(item);
+  cell.style.gridRow = `${converted.start} / ${converted.end}`;
+
+  const cellTitle = document.createElement("div");
+  cellTitle.classList.add("dayview-cell-title");
+  cellTitle.innerHTML = item.subject;
+
+  const cellTime = document.createElement("div");
+  cellTime.classList.add("dayview-cell-time");
+  const start = item.startDate.split("T")[1].slice(0, 5);
+  const end = item.endDate.split("T")[1].slice(0, 5);
+  cellTime.innerHTML = `${end} - ${start}`; // en tiiä miks tulee väärinpäin ?
+
+  dayGrid.appendChild(cell);
+  cell.appendChild(cellTime);
+  cell.appendChild(cellTitle);
+};
+
 //hakee päivän varaukset valitulle tilalle
 const getReservations = async (date, room, refresh = false) => {
   date = splitDate(date);
@@ -116,28 +138,11 @@ const getReservations = async (date, room, refresh = false) => {
       };
       const reservations = JSON.stringify(obj);
       dayGrid.innerHTML = "";
+
       for (const item of result.reservations) {
         localStorage.setItem(date + room, reservations);
 
-        const cell = document.createElement("div");
-        cell.classList.add("dayview-cell", "dayview-cell-extended");
-
-        const converted = convertToGrid(item);
-        cell.style.gridRow = `${converted.start} / ${converted.end}`;
-
-        const cellTitle = document.createElement("div");
-        cellTitle.classList.add("dayview-cell-title");
-        cellTitle.innerHTML = item.subject;
-
-        const cellTime = document.createElement("div");
-        cellTime.classList.add("dayview-cell-time");
-        const start = item.startDate.split("T")[1].slice(0, 5);
-        const end = item.endDate.split("T")[1].slice(0, 5);
-        cellTime.innerHTML = `${end} - ${start}`; // en tiiä miks tulee väärinpäin ?
-
-        dayGrid.appendChild(cell);
-        cell.appendChild(cellTime);
-        cell.appendChild(cellTitle);
+        renderReservations(item);
       }
       console.log("getReservations", result);
     } catch (error) {
@@ -147,25 +152,7 @@ const getReservations = async (date, room, refresh = false) => {
     const result = JSON.parse(localStorage.getItem(date + room));
     dayGrid.innerHTML = "";
     for (const item of result.reservations) {
-      const cell = document.createElement("div");
-      cell.classList.add("dayview-cell", "dayview-cell-extended");
-
-      const converted = convertToGrid(item);
-      cell.style.gridRow = `${converted.start} / ${converted.end}`;
-
-      const cellTitle = document.createElement("div");
-      cellTitle.classList.add("dayview-cell-title");
-      cellTitle.innerHTML = item.subject;
-
-      const cellTime = document.createElement("div");
-      cellTime.classList.add("dayview-cell-time");
-      const start = item.startDate.split("T")[1].slice(0, 5);
-      const end = item.endDate.split("T")[1].slice(0, 5);
-      cellTime.innerHTML = `${end} - ${start}`; // en tiiä miks tulee väärinpäin ?
-
-      dayGrid.appendChild(cell);
-      cell.appendChild(cellTime);
-      cell.appendChild(cellTitle);
+      renderReservations(item);
     }
   }
 };
