@@ -29,17 +29,26 @@ const queryString = document.location.search;
 const urlParams = new URLSearchParams(queryString);
 selectedRoom = urlParams.get("room");
 
-//jos hausta yli viikko poistetaan se localstoragesta
+//jos hausta yli viikko poistetaan se localstoragesta, jos se on vanhempi kuin
+//meneillään oleva päivä
 const removeOldLocalStorage = () => {
   for (let i = 0; i < localStorage.length; i++) {
     if (
-      localStorage.getItem(localStorage.key(i)).slice(2, 14) ==
-        "reservations" &&
-      new Date() -
-        JSON.parse(localStorage.getItem(localStorage.key(i))).timestamp >
-        604800000
+      localStorage.getItem(localStorage.key(i)).slice(2, 14) == "reservations"
     ) {
-      localStorage.removeItem(localStorage.key(i));
+      for (const item of JSON.parse(localStorage.getItem(localStorage.key(i)))
+        .reservations) {
+        console.log(new Date(item.endDate).getTime());
+        console.log();
+        if (
+          new Date() -
+            JSON.parse(localStorage.getItem(localStorage.key(i))).timestamp >
+            604800000 &&
+          new Date(item.endDate).getTime() < new Date().getTime()
+        ) {
+          localStorage.removeItem(localStorage.key(i));
+        }
+      }
     }
   }
 };
