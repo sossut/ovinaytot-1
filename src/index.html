@@ -30,11 +30,12 @@
         <div id="date-room">
           <div id="today-date"></div>
           <form id="rooms-form">
-            <label for="rooms">Valitse Huone:</label>
-            <select name="rooms" id="rooms">
-              <option></option>
-            </select>
-
+            <div class="select">
+              <select name="rooms" id="rooms">
+                <option selected disabled>Valitse huone</option>
+                <option></option>
+              </select>
+            </div>
             <input type="submit" value="Valitse" />
           </form>
           <div id="room"></div>
