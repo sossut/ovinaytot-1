@@ -7,7 +7,7 @@ import "color-calendar/dist/css/theme-glass.css";
 import { setInterval } from "worker-timers";
 const apiKey = "PNWqQ8p6R5sWevhU4Hu0";
 const url = "https://opendata.metropolia.fi/r1/reservation/search";
-const proxy = "https://salty-ocean-03856.herokuapp.com/";
+const proxy = "https://cors-anywhere.herokuapp.com/";
 
 const roomsSelect = document.querySelector("#rooms");
 const roomsForm = document.querySelector("#rooms-form");
@@ -38,8 +38,6 @@ const removeOldLocalStorage = () => {
     ) {
       for (const item of JSON.parse(localStorage.getItem(localStorage.key(i)))
         .reservations) {
-        console.log(new Date(item.endDate).getTime());
-        console.log();
         if (
           new Date() -
             JSON.parse(localStorage.getItem(localStorage.key(i))).timestamp >
@@ -118,7 +116,7 @@ const renderReservations = (item) => {
   cellTime.classList.add("dayview-cell-time");
   const start = item.startDate.split("T")[1].slice(0, 5);
   const end = item.endDate.split("T")[1].slice(0, 5);
-  cellTime.innerHTML = `${end} - ${start}`; // en tiiä miks tulee väärinpäin ?
+  cellTime.innerHTML = `${start} - ${end}`;
 
   dayGrid.appendChild(cell);
   cell.appendChild(cellTime);
@@ -165,6 +163,59 @@ const getReservations = async (date, room, refresh = false) => {
     }
   }
 };
+// hakee viikon varaukset kerrallaan, jos la tai su niin hakee seuraavan viikon varaukset
+const getWeekReservations = async (date, room, refresh = false) => {
+  dayGrid.style.gridTemplateColumns =
+    "[mon] 1fr [tue] 1fr [wed] 1fr [thu] 1fr [fri] 1fr";
+
+  while (date.getDay() != 1) {
+    if (date.getDay() === 0) {
+      date.setDate(date.getDate() + 1);
+      break;
+    }
+    if (date.getDay() === 6) {
+      date.setDate(date.getDate() + 2);
+      break;
+    }
+    date.setDate(date.getDate() - 1);
+  }
+  const end = splitDate(new Date(new Date().setDate(date.getDate() + 4)));
+  date = splitDate(date);
+
+  try {
+    const response = await fetch(proxy + url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
+      },
+      body: `{\n   "startDate":"${date}T00:00",\n   "endDate":"${end}T23:59",\n   "room":["${room}"]\n}`,
+    });
+    const result = await response.json();
+
+    const obj = {
+      reservations: result.reservations,
+      timestamp: new Date().getTime(),
+    };
+    const reservations = JSON.stringify(obj);
+    localStorage.setItem("week" + date + room, reservations);
+    // for (const item of result.reservations) {
+    //   if (new Date(item.startDate).getDay() == 1) {
+    //     console.log("monday");
+    //   }
+    //   if (new Date(item.startDate).getDay() == 2) {
+    //     console.log("tuesday");
+    //   }
+    //   if (new Date(item.startDate).getDay() == 3) {
+    //     console.log("wednesday");
+    //   }
+    // }
+    console.log("getReservationsWeek", result);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const disable = (obj) => {
   obj.disabled = true;
   setTimeout(() => {
@@ -315,3 +366,4 @@ setInterval(moveMarker, 1000);
 setInterval(check, 1000);
 removeOldLocalStorage();
 renderTimestamp();
+getWeekReservations(selectedDay, selectedRoom);

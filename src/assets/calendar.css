@@ -121,6 +121,7 @@ body {
     display: grid;
     grid-template-rows: repeat(899, 1px);
     /* grid-template-columns: fit-content(100%); */
+    direction: ltr;
 }
 
 .dayview-cell {
