@@ -5,12 +5,70 @@ html {
   max-width: 75%;
   font-family: "Roboto", sans-serif;
 }
+
+input[type=submit] {
+  display: flex;
+  margin: inherit;
+}
+
+/* Selecti setit */
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #d8dad8;
+  background-image: none;
+  flex: 1;
+  padding: 0 .5em;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  font-size: 1em;
+  font-family: 'Open Sans', sans-serif;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.select {
+  position: relative;
+  display: flex;
+  width: 20em;
+  height: 3em;
+  line-height: 3;
+  background: #000000;
+  overflow: hidden;
+  border-radius: .25em;
+}
+
+.select::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 1em;
+  background: #606160;
+  cursor: pointer;
+  pointer-events: none;
+  transition: .25s all ease;
+}
+
+.select:hover::after {
+  color: #ffffff;
+}
+
 #reservations-ul {
   padding: 1rem;
   border: 1px solid black;
   list-style: none;
   margin-top: 3rem;
 }
+
 #reservations-ul li {
   border: 1px solid black;
   padding: 2rem;
@@ -19,25 +77,31 @@ html {
   margin-right: auto;
   background-color: lightcyan;
 }
+
 #reservations-ul li:not(:first-child) {
   margin-top: 2rem;
 }
+
 #reservations-ul:empty {
   display: none;
 }
+
 #rooms-form {
   width: fit-content;
   margin: 2rem auto 2rem auto;
 }
+
 #today-date {
   width: fit-content;
   margin: 0 auto 2rem auto;
   font-size: 3rem;
 }
+
 #date-div {
   display: flex;
   margin: auto auto 2rem auto;
 }
+
 #caledar-div {
   font-family: Roboto, Helvetica, Arial, sans-serif;
   padding: 25px;
@@ -45,27 +109,33 @@ html {
   box-sizing: border-box;
   background-color: whitesmoke;
 }
+
 #date-room {
   margin: 0 auto 0 auto;
   width: 50%;
 }
+
 #month-view {
   float: right;
 }
+
 #date-buttons {
   width: fit-content;
   margin: 2rem auto auto auto;
 }
+
 #room {
   width: fit-content;
   margin: 0 auto 0 auto;
   font-size: 2rem;
 }
+
 #date-buttons button {
   margin: 0 2rem 0 2rem;
   padding: 1rem;
   font-size: 1rem;
 }
+
 #toggle-calendar {
   margin-bottom: 1rem;
   float: right;
@@ -79,45 +149,51 @@ html {
     padding: 0;
     margin: 0;
   }
+
   body {
     padding: 0;
     margin: 0;
   }
+
   #date-div {
     display: block;
   }
+
   #date-room {
     width: 100%;
   }
+
   #date-buttons {
     display: flex;
     width: fit-content;
     margin: 1rem auto 1rem auto;
   }
+
   #date-buttons button {
     padding: 3%;
     margin: 0;
     font-size: smaller;
     width: 100%;
   }
+
   #date-buttons button:not(:last-child) {
     margin-right: 1rem;
   }
+
   #today-date {
     font-size: 2rem;
     margin: 0 auto 0 auto;
   }
-  #rooms-form {
-    width: fit-content;
-    margin: 1rem auto 1rem auto;
-  }
+
   /* nappula ja kuukausikalenteri pitää kikkailla johonkin väliin */
   #color-calendar {
     display: none;
   }
+
   #toggle-calendar {
     display: none;
   }
+
   /* */
   #calendar-div {
     margin-top: 2rem;

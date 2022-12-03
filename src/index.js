@@ -101,13 +101,13 @@ const getRooms = async () => {
   }
 };
 
-const renderReservations = (item) => {
+const renderReservations = (item, column = null) => {
   const cell = document.createElement("div");
   cell.classList.add("dayview-cell", "dayview-cell-extended");
 
   const converted = convertToGrid(item);
   cell.style.gridRow = `${converted.start} / ${converted.end}`;
-
+  cell.style.gridColumn = column;
   const cellTitle = document.createElement("div");
   cellTitle.classList.add("dayview-cell-title");
   cellTitle.innerHTML = item.subject;
@@ -149,7 +149,7 @@ const getReservations = async (date, room, refresh = false) => {
       for (const item of result.reservations) {
         localStorage.setItem(date + room, reservations);
 
-        renderReservations(item);
+        renderReservations(item, "");
       }
       console.log("getReservations", result);
     } catch (error) {
@@ -165,8 +165,7 @@ const getReservations = async (date, room, refresh = false) => {
 };
 // hakee viikon varaukset kerrallaan, jos la tai su niin hakee seuraavan viikon varaukset
 const getWeekReservations = async (date, room, refresh = false) => {
-  dayGrid.style.gridTemplateColumns =
-    "[mon] 1fr [tue] 1fr [wed] 1fr [thu] 1fr [fri] 1fr";
+  dayGrid.style.gridTemplateColumns = "1fr 1fr 1fr 1fr 1fr";
 
   while (date.getDay() != 1) {
     if (date.getDay() === 0) {
@@ -179,40 +178,81 @@ const getWeekReservations = async (date, room, refresh = false) => {
     }
     date.setDate(date.getDate() - 1);
   }
-  const end = splitDate(new Date(new Date().setDate(date.getDate() + 4)));
+
+  const addDays = (date, days) => {
+    const res = new Date(date);
+    res.setDate(date.getDate() + days);
+    return res;
+  };
+  const end = splitDate(addDays(date, +4));
+
   date = splitDate(date);
+  if (!localStorage.getItem("week" + date + room) || refresh) {
+    try {
+      const response = await fetch(proxy + url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
+        },
+        body: `{\n   "startDate":"${date}T00:00",\n   "endDate":"${end}T23:59",\n   "room":["${room}"]\n}`,
+      });
+      const result = await response.json();
 
-  try {
-    const response = await fetch(proxy + url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
-      },
-      body: `{\n   "startDate":"${date}T00:00",\n   "endDate":"${end}T23:59",\n   "room":["${room}"]\n}`,
-    });
-    const result = await response.json();
+      const obj = {
+        reservations: result.reservations,
+        timestamp: new Date().getTime(),
+      };
+      const reservations = JSON.stringify(obj);
+      localStorage.setItem("week" + date + room, reservations);
+      for (const item of result.reservations) {
+        if (new Date(item.startDate).getDay() == 1) {
+          console.log("monday", item.startDate);
+          renderReservations(item, "1");
+        }
+        if (new Date(item.startDate).getDay() == 2) {
+          console.log("tuesday", item.startDate);
+          renderReservations(item, "2");
+        }
+        if (new Date(item.startDate).getDay() == 3) {
+          console.log("wednesday", item.startDate);
 
-    const obj = {
-      reservations: result.reservations,
-      timestamp: new Date().getTime(),
-    };
-    const reservations = JSON.stringify(obj);
-    localStorage.setItem("week" + date + room, reservations);
-    // for (const item of result.reservations) {
-    //   if (new Date(item.startDate).getDay() == 1) {
-    //     console.log("monday");
-    //   }
-    //   if (new Date(item.startDate).getDay() == 2) {
-    //     console.log("tuesday");
-    //   }
-    //   if (new Date(item.startDate).getDay() == 3) {
-    //     console.log("wednesday");
-    //   }
-    // }
-    console.log("getReservationsWeek", result);
-  } catch (error) {
-    console.error(error);
+          renderReservations(item, "3");
+        }
+        if (new Date(item.startDate).getDay() == 4) {
+          console.log("thursday", item.startDate);
+          renderReservations(item, "4");
+        }
+        if (new Date(item.startDate).getDay() == 5) {
+          console.log("friday", item.startDate);
+          renderReservations(item, "5");
+        }
+      }
+      console.log("getReservationsWeek", result);
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    const result = JSON.parse(
+      localStorage.getItem("week" + date + room)
+    ).reservations;
+    for (const item of result) {
+      if (new Date(item.startDate).getDay() == 1) {
+        renderReservations(item, "1");
+      }
+      if (new Date(item.startDate).getDay() == 2) {
+        renderReservations(item, "2");
+      }
+      if (new Date(item.startDate).getDay() == 3) {
+        renderReservations(item, "3");
+      }
+      if (new Date(item.startDate).getDay() == 4) {
+        renderReservations(item, "4");
+      }
+      if (new Date(item.startDate).getDay() == 5) {
+        renderReservations(item, "5");
+      }
+    }
   }
 };
 
@@ -366,4 +406,4 @@ setInterval(moveMarker, 1000);
 setInterval(check, 1000);
 removeOldLocalStorage();
 renderTimestamp();
-getWeekReservations(selectedDay, selectedRoom);
+// getWeekReservations(selectedDay, selectedRoom);
