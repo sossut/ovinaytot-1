@@ -6,8 +6,8 @@ import "color-calendar/dist/css/theme-glass.css";
 
 import { setInterval } from "worker-timers";
 const apiKey = "PNWqQ8p6R5sWevhU4Hu0";
-const url = "https://opendata.metropolia.fi/r1/reservation/search";
-const proxy = "https://cors-anywhere.herokuapp.com/";
+const url = "https://stream123.norwayeast.cloudapp.azure.com/";
+// const proxy = "https://cors-anywhere.herokuapp.com/";
 
 const roomsSelect = document.querySelector("#rooms");
 const roomsForm = document.querySelector("#rooms-form");
@@ -62,14 +62,11 @@ const getRooms = async () => {
   //   new Date() - JSON.parse(localStorage.getItem("rooms")).timestamp > 604800000
   if (!localStorage.getItem("rooms")) {
     try {
-      const response = await fetch(
-        proxy + "https://opendata.metropolia.fi/r1/reservation/building/78025",
-        {
-          headers: {
-            Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
-          },
-        }
-      );
+      const response = await fetch(url, {
+        headers: {
+          Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
+        },
+      });
 
       const result = await response.json();
       console.log("getRooms", result);
@@ -128,27 +125,31 @@ const getReservations = async (date, room, refresh = false) => {
   date = splitDate(date);
   displayRoom(room);
   dayGrid.innerHTML = "";
+
   if (!localStorage.getItem(date + room) || refresh) {
     try {
-      const response = await fetch(proxy + url, {
+      const fetchOptions = {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
         },
-        body: `{\n   "startDate":"${date}T00:00",\n   "endDate":"${date}T23:59",\n   "room":["${room}"]\n}`,
-      });
+      };
+
+      const response = await fetch(
+        `${url}day?startDate=${date}&endDate=${date}&room=${room}`,
+        fetchOptions
+      );
       const result = await response.json();
+
       const obj = {
         reservations: result.reservations,
         timestamp: new Date().getTime(),
       };
       const reservations = JSON.stringify(obj);
       dayGrid.innerHTML = "";
-
+      localStorage.setItem(date + room, reservations);
       for (const item of result.reservations) {
-        localStorage.setItem(date + room, reservations);
-
         renderReservations(item, "");
       }
       console.log("getReservations", result);
@@ -189,14 +190,17 @@ const getWeekReservations = async (date, room, refresh = false) => {
   date = splitDate(date);
   if (!localStorage.getItem("week" + date + room) || refresh) {
     try {
-      const response = await fetch(proxy + url, {
+      const fetchOptions = {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
         },
-        body: `{\n   "startDate":"${date}T00:00",\n   "endDate":"${end}T23:59",\n   "room":["${room}"]\n}`,
-      });
+      };
+      const response = await fetch(
+        `${url}week?startDate=${date}&endDate=${end}&room=${room}`,
+        fetchOptions
+      );
       const result = await response.json();
 
       const obj = {
