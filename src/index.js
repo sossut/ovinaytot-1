@@ -166,7 +166,7 @@ const getReservations = async (date, room, refresh = false) => {
 // hakee viikon varaukset kerrallaan, jos la tai su niin hakee seuraavan viikon varaukset
 const getWeekReservations = async (date, room, refresh = false) => {
   dayGrid.style.gridTemplateColumns = "1fr 1fr 1fr 1fr 1fr";
-
+  // dayGrid.innerHTML = "";
   while (date.getDay() != 1) {
     if (date.getDay() === 0) {
       date.setDate(date.getDate() + 1);
@@ -205,6 +205,7 @@ const getWeekReservations = async (date, room, refresh = false) => {
       };
       const reservations = JSON.stringify(obj);
       localStorage.setItem("week" + date + room, reservations);
+      // dayGrid.innerHTML = "";
       for (const item of result.reservations) {
         if (new Date(item.startDate).getDay() == 1) {
           console.log("monday", item.startDate);
@@ -236,6 +237,7 @@ const getWeekReservations = async (date, room, refresh = false) => {
     const result = JSON.parse(
       localStorage.getItem("week" + date + room)
     ).reservations;
+    // dayGrid.innerHTML = "";
     for (const item of result) {
       if (new Date(item.startDate).getDay() == 1) {
         renderReservations(item, "1");
@@ -306,7 +308,7 @@ roomsForm.addEventListener("submit", (e) => {
     let room = roomsSelect[roomsSelect.selectedIndex].value;
     selectedRoom = room;
     console.log(room);
-    dayGrid.innerHTML = "";
+    // dayGrid.innerHTML = "";
     getReservations(selectedDay, room);
   }
 });
@@ -364,7 +366,7 @@ let calendar = new Calendar({
   dateChanged: (currentDate) => {
     displayDate(currentDate);
     if (!first) {
-      dayGrid.innerHTML = "";
+      // dayGrid.innerHTML = "";
       getReservations(currentDate, selectedRoom);
       removeOldLocalStorage();
       renderTimestamp();
@@ -406,4 +408,4 @@ setInterval(moveMarker, 1000);
 setInterval(check, 1000);
 removeOldLocalStorage();
 renderTimestamp();
-// getWeekReservations(selectedDay, selectedRoom);
+getWeekReservations(selectedDay, selectedRoom);
