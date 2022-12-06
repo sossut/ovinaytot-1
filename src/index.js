@@ -148,7 +148,10 @@ const getReservations = async (date, room, refresh = false) => {
       };
       const reservations = JSON.stringify(obj);
       dayGrid.innerHTML = "";
-      localStorage.setItem(date + room, reservations);
+      if (result.reservations.length > 0) {
+        localStorage.setItem(date + room, reservations);
+      }
+
       for (const item of result.reservations) {
         renderReservations(item, "");
       }
@@ -208,7 +211,10 @@ const getWeekReservations = async (date, room, refresh = false) => {
         timestamp: new Date().getTime(),
       };
       const reservations = JSON.stringify(obj);
-      localStorage.setItem("week" + date + room, reservations);
+      if (result.reservations > 0) {
+        localStorage.setItem("week" + date + room, reservations);
+      }
+
       // dayGrid.innerHTML = "";
       for (const item of result.reservations) {
         if (new Date(item.startDate).getDay() == 1) {
@@ -412,4 +418,4 @@ setInterval(moveMarker, 1000);
 setInterval(check, 1000);
 removeOldLocalStorage();
 renderTimestamp();
-getWeekReservations(selectedDay, selectedRoom);
+// getWeekReservations(selectedDay, selectedRoom);
