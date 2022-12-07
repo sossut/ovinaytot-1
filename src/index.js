@@ -11,6 +11,7 @@ const url = "https://stream123.norwayeast.cloudapp.azure.com/";
 
 const roomsSelect = document.querySelector("#rooms");
 const roomsForm = document.querySelector("#rooms-form");
+const dropdownMenu = document.querySelector("#drop-menu");
 
 const yesterdayButton = document.querySelector("#yesterday");
 const tomorrowButton = document.querySelector("#tomorrow");
@@ -373,8 +374,7 @@ const convertToGrid = (item) => {
   return { start, end };
 };
 
-roomsForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+dropdownMenu.addEventListener("change", () => {
   if (roomsSelect[roomsSelect.selectedIndex] != 0) {
     let room = roomsSelect[roomsSelect.selectedIndex].value;
     selectedRoom = room;

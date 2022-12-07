@@ -86,8 +86,8 @@ select::-ms-expand {
   display: none;
 }
 
-#rooms-form {
-  width: fit-content;
+#drop-menu {
+  width: flex;
   margin: 2rem auto 2rem auto;
 }
 
