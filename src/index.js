@@ -20,7 +20,7 @@ const dayGrid = document.querySelector(".dayview-gridcell");
 const updated = document.querySelector("#last-updated");
 const updateButton = document.querySelector("#update");
 const dispSwitch = document.querySelector("#switch-input");
-const weekdays = document.querySelector("#weekdays");
+const weekday = document.querySelector(".weekday");
 let selectedRoom;
 
 const date = new Date();
@@ -55,6 +55,44 @@ const removeOldLocalStorage = () => {
 
 const splitDate = (date) => {
   return date.toLocaleDateString("sv");
+};
+
+const renderWeekDays = () => {
+  const weekday = document.querySelectorAll(".weekday");
+  if (dispSwitch.checked) {
+    dayGrid.innerHTML = `<div
+                    class="weekday dayview-cell dayview-cell-extended"
+                    id="mon"
+                  >
+                    <p>Ma</p>
+                  </div>
+                  <div
+                    class="weekday dayview-cell dayview-cell-extended"
+                    id="tue"
+                  >
+                    <p>Ti</p>
+                  </div>
+                  <div
+                    class="weekday dayview-cell dayview-cell-extended"
+                    id="wed"
+                  >
+                    <p>Ke</p>
+                  </div>
+                  <div
+                    class="weekday dayview-cell dayview-cell-extended"
+                    id="thu"
+                  >
+                    <p>To</p>
+                  </div>
+                  <div
+                    class="weekday dayview-cell dayview-cell-extended"
+                    id="fri"
+                  >
+                    <p>Pe</p>
+                  </div>`;
+  } else {
+    dayGrid.innerHTML = "";
+  }
 };
 
 //hakee Karaportin kaikki huoneet
@@ -122,14 +160,21 @@ const renderReservations = (item, column = null) => {
   cell.appendChild(cellTitle);
 };
 
+const createEmptyCell = (column) => {
+  const cell = document.createElement("div");
+  cell.classList.add("dayview-cell", "dayview-cell-extended");
+  cell.style.gridRow = "1 / 901";
+  cell.style.gridColumn = column;
+  cell.style.visibility = "hidden";
+  dayGrid.appendChild(cell);
+};
+
 //hakee päivän varaukset valitulle tilalle
 const getReservations = async (date, room, refresh = false) => {
-  console.log(date);
-  console.log(selectedDay);
   dayGrid.style.gridTemplateColumns = "1fr";
   date = splitDate(date);
   displayRoom(room);
-  dayGrid.innerHTML = "";
+  renderWeekDays();
 
   if (!localStorage.getItem(date + room) || refresh) {
     try {
@@ -152,7 +197,7 @@ const getReservations = async (date, room, refresh = false) => {
         timestamp: new Date().getTime(),
       };
       const reservations = JSON.stringify(obj);
-      dayGrid.innerHTML = "";
+      renderWeekDays();
       if (result.reservations.length > 0) {
         localStorage.setItem(date + room, reservations);
       }
@@ -166,18 +211,66 @@ const getReservations = async (date, room, refresh = false) => {
     }
   } else {
     const result = JSON.parse(localStorage.getItem(date + room));
-    dayGrid.innerHTML = "";
+    renderWeekDays();
     for (const item of result.reservations) {
       renderReservations(item);
     }
   }
 };
+
+const renderWeek = (array) => {
+  const monday = [];
+  const tuesday = [];
+  const wednesday = [];
+  const thursday = [];
+  const friday = [];
+
+  for (const item of array) {
+    if (new Date(item.startDate).getDay() == 1) {
+      renderReservations(item, "1");
+      monday.push(item);
+    }
+    if (new Date(item.startDate).getDay() == 2) {
+      renderReservations(item, "2");
+      tuesday.push(item);
+    }
+    if (new Date(item.startDate).getDay() == 3) {
+      renderReservations(item, "3");
+      wednesday.push(item);
+    }
+    if (new Date(item.startDate).getDay() == 4) {
+      renderReservations(item, "4");
+      thursday.push(item);
+    }
+    if (new Date(item.startDate).getDay() == 5) {
+      renderReservations(item, "5");
+      friday.push(item);
+    }
+  }
+
+  if (monday.length === 0) {
+    createEmptyCell("1");
+  }
+  if (tuesday.length === 0) {
+    createEmptyCell("2");
+  }
+  if (wednesday.length === 0) {
+    createEmptyCell("3");
+  }
+  if (thursday.length === 0) {
+    createEmptyCell("4");
+  }
+  if (friday.length === 0) {
+    createEmptyCell("5");
+  }
+};
+
 // hakee viikon varaukset kerrallaan, jos la tai su niin hakee seuraavan viikon varaukset
 const getWeekReservations = async (date, room, refresh = false) => {
   console.log(date);
   let d = new Date(date);
   dayGrid.style.gridTemplateColumns = "1fr 1fr 1fr 1fr 1fr";
-  dayGrid.innerHTML = "";
+  renderWeekDays();
   while (d.getDay() != 1) {
     if (d.getDay() === 0) {
       d.setDate(d.getDate() + 1);
@@ -221,31 +314,8 @@ const getWeekReservations = async (date, room, refresh = false) => {
       if (result.reservations.length > 0) {
         localStorage.setItem("week" + d + room, reservations);
       }
-
-      dayGrid.innerHTML = "";
-      for (const item of result.reservations) {
-        if (new Date(item.startDate).getDay() == 1) {
-          console.log("monday", item.startDate);
-          renderReservations(item, "1");
-        }
-        if (new Date(item.startDate).getDay() == 2) {
-          console.log("tuesday", item.startDate);
-          renderReservations(item, "2");
-        }
-        if (new Date(item.startDate).getDay() == 3) {
-          console.log("wednesday", item.startDate);
-
-          renderReservations(item, "3");
-        }
-        if (new Date(item.startDate).getDay() == 4) {
-          console.log("thursday", item.startDate);
-          renderReservations(item, "4");
-        }
-        if (new Date(item.startDate).getDay() == 5) {
-          console.log("friday", item.startDate);
-          renderReservations(item, "5");
-        }
-      }
+      renderWeekDays();
+      renderWeek(result.reservations);
       console.log("getReservationsWeek", result);
     } catch (error) {
       console.error(error);
@@ -254,24 +324,8 @@ const getWeekReservations = async (date, room, refresh = false) => {
     const result = JSON.parse(
       localStorage.getItem("week" + d + room)
     ).reservations;
-    dayGrid.innerHTML = "";
-    for (const item of result) {
-      if (new Date(item.startDate).getDay() == 1) {
-        renderReservations(item, "1");
-      }
-      if (new Date(item.startDate).getDay() == 2) {
-        renderReservations(item, "2");
-      }
-      if (new Date(item.startDate).getDay() == 3) {
-        renderReservations(item, "3");
-      }
-      if (new Date(item.startDate).getDay() == 4) {
-        renderReservations(item, "4");
-      }
-      if (new Date(item.startDate).getDay() == 5) {
-        renderReservations(item, "5");
-      }
-    }
+    renderWeekDays();
+    renderWeek(result);
   }
 };
 
@@ -336,7 +390,12 @@ roomsForm.addEventListener("submit", (e) => {
 
 updateButton.onclick = () => {
   localStorage.removeItem(splitDate(selectedDay) + selectedRoom);
-  getReservations(selectedDay, selectedRoom, true);
+
+  if (!dispSwitch.checked) {
+    getReservations(selectedDay, selectedRoom, true);
+  } else {
+    getWeekReservations(selectedDay, selectedRoom, true);
+  }
   renderTimestamp();
 };
 
@@ -364,10 +423,10 @@ todayButton.onclick = () => {
 dispSwitch.addEventListener("change", (e) => {
   if (dispSwitch.checked) {
     getWeekReservations(selectedDay, selectedRoom);
-    weekdays.style.display = "flex";
+    weekday.style.display = "flex";
   } else {
     getReservations(selectedDay, selectedRoom);
-    weekdays.style.display = "none";
+    weekday.style.display = "none";
   }
 });
 

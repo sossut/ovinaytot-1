@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <link rel="stylesheet" href="assets/style.css" />
     <link rel="stylesheet" href="assets/calendar.css" />
+    <link rel="stylesheet" href="assets/style.css" />
     <!-- <link rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
     <link rel="apple-touch-icon" href="assets/img/icon.png"> -->
 
@@ -62,13 +62,6 @@
         </div>
       </div>
 
-      <div id="weekdays">
-        <div class="weekday"><p>Ma</p></div>
-        <div class="weekday"><p>Ti</p></div>
-        <div class="weekday"><p>Ke</p></div>
-        <div class="weekday"><p>To</p></div>
-        <div class="weekday"><p>Pe</p></div>
-      </div>
       <div id="calendar-div" dir="rtl">
         <div class="dayview-container">
           <div class="dayview-timestrings-container">
@@ -142,7 +135,38 @@
               <div class="dayview-now-marker"></div>
               <div class="dayview-grid-marker-start"></div>
               <div class="dayview-gridcell-container">
-                <div class="dayview-gridcell"></div>
+                <div class="dayview-gridcell">
+                  <div
+                    class="weekday dayview-cell dayview-cell-extended"
+                    id="mon"
+                  >
+                    <p>Ma</p>
+                  </div>
+                  <div
+                    class="weekday dayview-cell dayview-cell-extended"
+                    id="tue"
+                  >
+                    <p>Ti</p>
+                  </div>
+                  <div
+                    class="weekday dayview-cell dayview-cell-extended"
+                    id="wed"
+                  >
+                    <p>Ke</p>
+                  </div>
+                  <div
+                    class="weekday dayview-cell dayview-cell-extended"
+                    id="thu"
+                  >
+                    <p>To</p>
+                  </div>
+                  <div
+                    class="weekday dayview-cell dayview-cell-extended"
+                    id="fri"
+                  >
+                    <p>Pe</p>
+                  </div>
+                </div>
               </div>
               <div class="dayview-grid-marker-end"></div>
             </div>

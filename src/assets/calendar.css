@@ -8,7 +8,7 @@ body {
 .dayview-container {
     position: relative;
     display: flex;
-    overflow: hidden;
+    overflow: visible;
     align-items: stretch;
     flex: 1 1 auto;
 }
@@ -65,7 +65,7 @@ body {
     display: inline-flex;
     vertical-align: top;
     margin-top: 6px;
-    overflow: hidden;
+    overflow: visible;
 
 }
 
@@ -180,6 +180,15 @@ body {
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
-@media screen {
-
+@media screen and (max-width: 700px){
+  .dayview-cell {
+    font-size: 0.7rem;
+    min-width: 85px;
+  }
+  .dayview-gridcell {
+    overflow-x: scroll;
+  }
+  .dayview-container {
+    overflow: visible !important;
+  }
 }
