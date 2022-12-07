@@ -140,12 +140,23 @@ const getRooms = async () => {
 };
 
 const renderReservations = (item, column = null) => {
+  const d = new Date();
   const cell = document.createElement("div");
   cell.classList.add("dayview-cell", "dayview-cell-extended");
 
   const converted = convertToGrid(item);
   cell.style.gridRow = `${converted.start} / ${converted.end}`;
   cell.style.gridColumn = column;
+  console.log(splitDate(new Date(item.startDate)));
+  console.log(splitDate(d));
+  if (
+    splitDate(new Date(item.startDate)) === splitDate(d) &&
+    dispSwitch.checked
+  ) {
+    console.log("moaaa");
+    cell.style.backgroundColor = "#ff5000";
+    cell.style.borderColor = "black";
+  }
   const cellTitle = document.createElement("div");
   cellTitle.classList.add("dayview-cell-title");
   cellTitle.innerHTML = item.subject;
