@@ -147,8 +147,7 @@ const renderReservations = (item, column = null) => {
   const converted = convertToGrid(item);
   cell.style.gridRow = `${converted.start} / ${converted.end}`;
   cell.style.gridColumn = column;
-  console.log(splitDate(new Date(item.startDate)));
-  console.log(splitDate(d));
+
   if (
     splitDate(new Date(item.startDate)) === splitDate(d) &&
     dispSwitch.checked
@@ -369,7 +368,12 @@ const check = () => {
   const newDate = new Date();
   if (newDate.getHours() == 0 && newDate.getMinutes() == 0) {
     displayDate(newDate);
-    getReservations(newDate, selectedRoom);
+
+    if (!dispSwitch.checked) {
+      getReservations(newDate, selectedRoom);
+    } else {
+      getWeekReservations(newDate, selectedRoom);
+    }
     calendar.setDate(newDate);
   }
 };
@@ -471,7 +475,6 @@ let calendar = new Calendar({
       if (!dispSwitch.checked) {
         getReservations(selectedDay, selectedRoom);
       } else {
-        console.log("moro");
         getWeekReservations(selectedDay, selectedRoom);
       }
       removeOldLocalStorage();
