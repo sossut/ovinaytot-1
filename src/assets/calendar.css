@@ -103,7 +103,6 @@ body {
 
 .dayview-gridcell-container {
     position: relative;
-    padding: 0 12px;
     box-sizing: border-box;
     flex: 1 0 auto;
     width: 129px;

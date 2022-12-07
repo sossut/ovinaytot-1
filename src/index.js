@@ -19,6 +19,8 @@ const todayButton = document.querySelector("#today");
 const dayGrid = document.querySelector(".dayview-gridcell");
 const updated = document.querySelector("#last-updated");
 const updateButton = document.querySelector("#update");
+const dispSwitch = document.querySelector("#switch-input");
+const weekdays = document.querySelector("#weekdays");
 let selectedRoom;
 
 const date = new Date();
@@ -122,6 +124,9 @@ const renderReservations = (item, column = null) => {
 
 //hakee päivän varaukset valitulle tilalle
 const getReservations = async (date, room, refresh = false) => {
+  console.log(date);
+  console.log(selectedDay);
+  dayGrid.style.gridTemplateColumns = "1fr";
   date = splitDate(date);
   displayRoom(room);
   dayGrid.innerHTML = "";
@@ -169,18 +174,20 @@ const getReservations = async (date, room, refresh = false) => {
 };
 // hakee viikon varaukset kerrallaan, jos la tai su niin hakee seuraavan viikon varaukset
 const getWeekReservations = async (date, room, refresh = false) => {
+  console.log(date);
+  let d = new Date(date);
   dayGrid.style.gridTemplateColumns = "1fr 1fr 1fr 1fr 1fr";
-  // dayGrid.innerHTML = "";
-  while (date.getDay() != 1) {
-    if (date.getDay() === 0) {
-      date.setDate(date.getDate() + 1);
+  dayGrid.innerHTML = "";
+  while (d.getDay() != 1) {
+    if (d.getDay() === 0) {
+      d.setDate(d.getDate() + 1);
       break;
     }
-    if (date.getDay() === 6) {
-      date.setDate(date.getDate() + 2);
+    if (d.getDay() === 6) {
+      d.setDate(d.getDate() + 2);
       break;
     }
-    date.setDate(date.getDate() - 1);
+    d.setDate(d.getDate() - 1);
   }
 
   const addDays = (date, days) => {
@@ -188,10 +195,10 @@ const getWeekReservations = async (date, room, refresh = false) => {
     res.setDate(date.getDate() + days);
     return res;
   };
-  const end = splitDate(addDays(date, +4));
+  const end = splitDate(addDays(d, +4));
 
-  date = splitDate(date);
-  if (!localStorage.getItem("week" + date + room) || refresh) {
+  d = splitDate(d);
+  if (!localStorage.getItem("week" + d + room) || refresh) {
     try {
       const fetchOptions = {
         method: "POST",
@@ -211,11 +218,11 @@ const getWeekReservations = async (date, room, refresh = false) => {
         timestamp: new Date().getTime(),
       };
       const reservations = JSON.stringify(obj);
-      if (result.reservations > 0) {
-        localStorage.setItem("week" + date + room, reservations);
+      if (result.reservations.length > 0) {
+        localStorage.setItem("week" + d + room, reservations);
       }
 
-      // dayGrid.innerHTML = "";
+      dayGrid.innerHTML = "";
       for (const item of result.reservations) {
         if (new Date(item.startDate).getDay() == 1) {
           console.log("monday", item.startDate);
@@ -245,9 +252,9 @@ const getWeekReservations = async (date, room, refresh = false) => {
     }
   } else {
     const result = JSON.parse(
-      localStorage.getItem("week" + date + room)
+      localStorage.getItem("week" + d + room)
     ).reservations;
-    // dayGrid.innerHTML = "";
+    dayGrid.innerHTML = "";
     for (const item of result) {
       if (new Date(item.startDate).getDay() == 1) {
         renderReservations(item, "1");
@@ -319,7 +326,11 @@ roomsForm.addEventListener("submit", (e) => {
     selectedRoom = room;
     console.log(room);
     // dayGrid.innerHTML = "";
-    getReservations(selectedDay, room);
+    if (!dispSwitch.checked) {
+      getReservations(selectedDay, room);
+    } else {
+      getWeekReservations(selectedDay, room);
+    }
   }
 });
 
@@ -350,6 +361,15 @@ todayButton.onclick = () => {
   // getReservations(splitDate(today), selectedRoom);
   displayDate(today);
 };
+dispSwitch.addEventListener("change", (e) => {
+  if (dispSwitch.checked) {
+    getWeekReservations(selectedDay, selectedRoom);
+    weekdays.style.display = "flex";
+  } else {
+    getReservations(selectedDay, selectedRoom);
+    weekdays.style.display = "none";
+  }
+});
 
 const displayDate = (date) => {
   document.getElementById("today-date").innerHTML = "";
@@ -375,14 +395,19 @@ let calendar = new Calendar({
 
   dateChanged: (currentDate) => {
     displayDate(currentDate);
+    selectedDay = currentDate;
     if (!first) {
       // dayGrid.innerHTML = "";
-      getReservations(currentDate, selectedRoom);
+      if (!dispSwitch.checked) {
+        getReservations(selectedDay, selectedRoom);
+      } else {
+        console.log("moro");
+        getWeekReservations(selectedDay, selectedRoom);
+      }
       removeOldLocalStorage();
       renderTimestamp();
     }
     first = false;
-    selectedDay = currentDate;
   },
   monthChanged: (currentDate) => {},
 });
@@ -410,6 +435,7 @@ hideButton.onclick = () => {
 //       });
 //   });
 // }
+
 displayDate(date);
 displayRoom(selectedRoom);
 getRooms();
