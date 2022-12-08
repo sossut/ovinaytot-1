@@ -34,7 +34,36 @@ select {
 select::-ms-expand {
   display: none;
 }
+#tomorrow {
+  background-image: url(./img/arrowpng.parspng.com-5.png);
+  background-size: contain;
 
+}
+#yesterday {
+  background-image: url(./img/arrowpng.parspng.com-5.png);
+  background-size: contain;
+  -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+.day-btn {
+  height: 50px;
+  min-width: 50px;
+  border-radius: 5px;
+  border: black 1px solid;
+}
+#update {
+  background-image: url(./img/Refresh_icon.svg);
+  background-size: contain;
+  height: 40px;
+  width: 40px;
+  border-radius: 5px;
+  border: black 1px solid;
+  margin-top: 10px;
+}
 .select {
   position: relative;
   display: flex;
@@ -121,8 +150,9 @@ select::-ms-expand {
 
 #date-buttons {
   width: fit-content;
-  margin: 2rem auto auto auto;
+  margin: 2rem auto 20px auto;
 }
+
 
 #room {
   width: fit-content;
@@ -174,6 +204,10 @@ select::-ms-expand {
 #fri {
   grid-area: 1 / 5 / 61;
 }
+#refresh {
+  margin: auto;
+  padding-left: 10px;
+}
 /* kännykälle sopivat setit */
 @media screen and (max-width: 900px) {
   html {
@@ -201,7 +235,9 @@ select::-ms-expand {
     width: fit-content;
     margin: 1rem auto 1rem auto;
   }
-
+    #today {
+      min-width: 70px;
+    }
   #date-buttons button {
     padding: 3%;
     margin: 0;
