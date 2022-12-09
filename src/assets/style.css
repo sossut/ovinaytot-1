@@ -6,7 +6,7 @@ html {
   font-family: "Roboto", sans-serif;
 }
 
-input[type=submit] {
+input[type="submit"] {
   display: flex;
   margin: inherit;
 }
@@ -24,11 +24,11 @@ select {
   background: #d8dad8;
   background-image: none;
   flex: 1;
-  padding: 0 .5em;
+  padding: 0 0.5em;
   color: rgb(0, 0, 0);
   cursor: pointer;
   font-size: 1em;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 select::-ms-expand {
@@ -43,11 +43,11 @@ select::-ms-expand {
   line-height: 3;
   background: #000000;
   overflow: hidden;
-  border-radius: .25em;
+  border-radius: 0.25em;
 }
 
 .select::after {
-  content: '\25BC';
+  content: "\25BC";
   position: absolute;
   top: 0;
   right: 0;
@@ -55,7 +55,7 @@ select::-ms-expand {
   background: #606160;
   cursor: pointer;
   pointer-events: none;
-  transition: .25s all ease;
+  transition: 0.25s all ease;
 }
 
 .select:hover::after {
@@ -156,7 +156,7 @@ select::-ms-expand {
   position: relative;
   font-size: 1rem !important;
   background: none;
-  color:#000000;
+  color: #000000;
   border: none;
 }
 #mon {
@@ -174,6 +174,14 @@ select::-ms-expand {
 #fri {
   grid-area: 1 / 5 / 61;
 }
+#last-updated-div {
+  width: fit-content;
+  margin: 2rem auto auto auto;
+}
+#color-calendar {
+  display: block;
+}
+
 /* kännykälle sopivat setit */
 @media screen and (max-width: 900px) {
   html {
@@ -205,17 +213,13 @@ select::-ms-expand {
   #date-buttons button {
     padding: 3%;
     margin: 0;
-    font-size: smaller;
     width: 100%;
-  }
-
-  #date-buttons button:not(:last-child) {
-    margin-right: 1rem;
+    margin-right: 2rem;
   }
 
   #today-date {
     font-size: 2rem;
-    margin: 0 auto 0 auto;
+    margin: 1rem auto 0 auto;
   }
 
   /* nappula ja kuukausikalenteri pitää kikkailla johonkin väliin */
@@ -258,8 +262,8 @@ select::-ms-expand {
   right: 0;
   bottom: 0;
   background-color: #6670bf;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -270,19 +274,19 @@ select::-ms-expand {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
-input:checked+.slider {
-  background-color: #2196F3;
+input:checked + .slider {
+  background-color: #2196f3;
 }
 
-input:focus+.slider {
-  box-shadow: 0 0 1px #2196F3;
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -298,10 +302,55 @@ input:checked+.slider:before {
 }
 
 #day-switch {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* mobiilinäkymässä pelkkä päivänäkymä */
+  display: none;
 }
- #day-switch p {
+#day-switch p {
   margin: 0 10px;
- }
+}
+#last-updated-div {
+  width: fit-content;
+  margin: 2rem auto auto auto;
+}
+.dayview-cell {
+  font-size: 1rem;
+  min-width: 85px;
+}
+#drop-menu {
+  width: flex;
+  margin: 1rem auto 1rem auto;
+}
+#yesterday {
+  background-color: indianred;
+  border: 1px;
+  border-radius: 0.5rem;
+  margin-left: 2rem;
+}
+#today {
+  border: 1px;
+  background-color: lightblue;
+  border-radius: 0.5rem;
+}
+#tomorrow {
+  background-color: lightgreen;
+  border: 1px;
+  border-radius: 0.5rem;
+}
+
+@media screen and (min-width: 600px) {
+  #day-switch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto auto auto;
+  }
+}
+
+@media screen and (max-width: 1350px) {
+  #month-view {
+    display: none;
+  }
+  #date-buttons {
+    display: flex;
+  }
+}
