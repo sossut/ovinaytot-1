@@ -49,6 +49,9 @@ select::-ms-expand {
     filter: FlipH;
     -ms-filter: "FlipH";
 }
+#today {
+  transform: translate(0, -2px);
+}
 .day-btn {
   height: 50px;
   min-width: 50px;
@@ -161,7 +164,7 @@ select::-ms-expand {
 }
 
 #date-buttons button {
-  margin: 0 2rem 0 2rem;
+  margin: 0 1rem 0 1rem;
   padding: 1rem;
   font-size: 1rem;
 }
@@ -219,7 +222,7 @@ select::-ms-expand {
 
   body {
     padding: 0;
-    margin: 0;
+    margin: 5px;
   }
 
   #date-div {
@@ -237,6 +240,7 @@ select::-ms-expand {
   }
     #today {
       min-width: 70px;
+      transform: translate(0, 0px);
     }
   #date-buttons button {
     padding: 3%;
@@ -244,7 +248,9 @@ select::-ms-expand {
     font-size: smaller;
     width: 100%;
   }
-
+  #day-switch {
+    padding-top: 10px;
+  }
   #date-buttons button:not(:last-child) {
     margin-right: 1rem;
   }
@@ -266,7 +272,6 @@ select::-ms-expand {
   /* */
   #calendar-div {
     margin-top: 2rem;
-    padding: 0;
     width: 100%;
   }
 }
