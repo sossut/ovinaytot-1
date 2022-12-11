@@ -415,18 +415,36 @@ updateButton.onclick = () => {
 };
 
 yesterdayButton.onclick = () => {
-  const yesterday = new Date(selectedDay.setDate(selectedDay.getDate() - 1));
-  selectedDay = yesterday;
-  calendar.setDate(selectedDay);
-  // getReservations(splitDate(yesterday), selectedRoom);
-  displayDate(yesterday);
+  if (!dispSwitch.checked) {
+    const yesterday = new Date(selectedDay.setDate(selectedDay.getDate() - 1));
+    selectedDay = yesterday;
+    calendar.setDate(selectedDay);
+    // getReservations(splitDate(tomorrow), selectedRoom);
+    displayDate(yesterday);
+  } else {
+    const yesterday = new Date(selectedDay.setDate(selectedDay.getDate() - 7));
+
+    selectedDay = yesterday;
+    calendar.setDate(selectedDay);
+    // getReservations(splitDate(tomorrow), selectedRoom);
+    displayDate(yesterday);
+  }
 };
 tomorrowButton.onclick = () => {
-  const tomorrow = new Date(selectedDay.setDate(selectedDay.getDate() + 1));
-  selectedDay = tomorrow;
-  calendar.setDate(selectedDay);
-  // getReservations(splitDate(tomorrow), selectedRoom);
-  displayDate(tomorrow);
+  if (!dispSwitch.checked) {
+    const tomorrow = new Date(selectedDay.setDate(selectedDay.getDate() + 1));
+    selectedDay = tomorrow;
+    calendar.setDate(selectedDay);
+    // getReservations(splitDate(tomorrow), selectedRoom);
+    displayDate(tomorrow);
+  } else {
+    const tomorrow = new Date(selectedDay.setDate(selectedDay.getDate() + 7));
+
+    selectedDay = tomorrow;
+    calendar.setDate(selectedDay);
+    // getReservations(splitDate(tomorrow), selectedRoom);
+    displayDate(tomorrow);
+  }
 };
 todayButton.onclick = () => {
   const today = new Date();
