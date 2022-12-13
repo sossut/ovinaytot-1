@@ -104,9 +104,7 @@ const getRooms = async () => {
   if (!localStorage.getItem("rooms")) {
     try {
       const response = await fetch(url, {
-        headers: {
-          Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
-        },
+        headers: {},
       });
 
       const result = await response.json();
@@ -193,7 +191,6 @@ const getReservations = async (date, room, refresh = false) => {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
         },
       };
 
@@ -308,7 +305,6 @@ const getWeekReservations = async (date, room, refresh = false) => {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: "Basic " + btoa("PNWqQ8p6R5sWevhU4Hu0:"),
         },
       };
       const response = await fetch(
