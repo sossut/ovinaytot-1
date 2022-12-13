@@ -38,6 +38,7 @@ select {
 }
 #today {
   min-width: 5rem;
+  transform: translateY(8px);
 }
 #tomorrow {
   background-image: url(./img/arrowpng.parspng.com-5.png);
@@ -78,7 +79,9 @@ select {
 select::-ms-expand {
   display: none;
 }
-
+#day-switch {
+  margin: 1rem auto auto auto;
+}
 .select {
   position: relative;
   display: flex;
@@ -138,7 +141,7 @@ select::-ms-expand {
 #today-date {
   width: fit-content;
   margin: 0 auto 2rem auto;
-  font-size: 3rem;
+  font-size: 1.5rem;
 }
 
 #date-div {
@@ -171,11 +174,10 @@ select::-ms-expand {
 #room {
   width: fit-content;
   margin: 0 auto 0 auto;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 #date-buttons button {
-  margin: 0 2rem 0 2rem;
   padding: 1rem;
   font-size: 1rem;
 }
@@ -226,62 +228,7 @@ select::-ms-expand {
   display: block;
 }
 
-/* kännykälle sopivat setit */
-@media screen and (max-width: 900px) {
-  html {
-    width: 100%;
-    max-width: 100%;
-    padding: 0;
-    margin: 0;
-  }
 
-  body {
-    padding: 0;
-    margin: 0;
-  }
-
-  #date-div {
-    display: block;
-  }
-
-  #date-room {
-    width: 100%;
-  }
-
-  #date-buttons {
-    display: flex;
-    width: fit-content;
-    margin: 1rem auto 1rem auto;
-  }
-
-  #date-buttons button {
-    padding: 3%;
-    margin: 0;
-    width: 100%;
-    margin-right: 2rem;
-  }
-
-  #today-date {
-    font-size: 2rem;
-    margin: 1rem auto 0 auto;
-  }
-
-  /* nappula ja kuukausikalenteri pitää kikkailla johonkin väliin */
-  #color-calendar {
-    display: none;
-  }
-
-  #toggle-calendar {
-    display: none;
-  }
-
-  /* */
-  #calendar-div {
-    margin-top: 2rem;
-    padding: 0;
-    width: 100%;
-  }
-}
 /* The switch - the box around the slider */
 .switch {
   position: relative;
@@ -368,18 +315,86 @@ input:checked + .slider:before {
   background-color: indianred;
   border: 1px;
   border-radius: 0.5rem;
-  margin-left: 2rem;
+  margin-right: 2rem;
 }
 #today {
   border: 1px;
   background-color: lightblue;
   border-radius: 0.5rem;
+  margin-right: 2rem;
+
 }
 #tomorrow {
   background-color: lightgreen;
   border: 1px;
   border-radius: 0.5rem;
 }
+#refresh {
+  margin: 2rem auto auto auto;
+}
+
+
+
+/* kännykälle sopivat setit */
+@media screen and (max-width: 900px) {
+  html {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  body {
+    padding: 0;
+    margin: 0 0.5rem auto 0.5rem;
+  }
+
+  #date-div {
+    display: block;
+    margin: auto auto 0.5rem auto;
+  }
+
+  #date-room {
+    width: 100%;
+  }
+#today {
+  transform: translateY(0px);
+}
+  #date-buttons {
+    display: flex;
+    width: fit-content;
+    margin: 1rem auto 1rem auto;
+  }
+
+  #date-buttons button {
+    padding: 3%;
+    width: 100%;
+  }
+
+  #today-date {
+    font-size: 1.5rem;
+  }
+
+  /* nappula ja kuukausikalenteri pitää kikkailla johonkin väliin */
+  #color-calendar {
+    display: none;
+  }
+
+  #toggle-calendar {
+    display: none;
+  }
+
+  /* */
+  #calendar-div {
+    padding: 0;
+    width: 100%;
+  }
+  #room-date {
+    display: flex;
+  }
+}
+
+
 
 @media screen and (min-width: 600px) {
   #day-switch {
@@ -388,6 +403,18 @@ input:checked + .slider:before {
     align-items: center;
     margin: 1rem auto auto auto;
   }
+  #room {
+    position: absolute;
+    top: 0;
+    margin: 1rem auto auto 2rem;
+    display: block;
+  }
+  #today-date {
+    position: absolute;
+    top: 0;
+    margin: 4rem auto auto 2rem;
+  }
+
 }
 
 @media screen and (max-width: 1350px) {
@@ -396,5 +423,8 @@ input:checked + .slider:before {
   }
   #date-buttons {
     display: flex;
+  }
+  #refresh {
+    margin: 1rem auto auto auto;
   }
 }
