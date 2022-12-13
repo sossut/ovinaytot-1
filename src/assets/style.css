@@ -31,6 +31,50 @@ select {
   font-family: "Open Sans", sans-serif;
 }
 
+#refresh {
+  width: fit-content;
+  margin: 2rem auto auto auto;
+  display: flex;
+}
+#today {
+  min-width: 5rem;
+}
+#tomorrow {
+  background-image: url(./img/arrowpng.parspng.com-5.png);
+  background-size: contain;
+}
+#yesterday {
+  background-image: url(./img/arrowpng.parspng.com-5.png);
+  background-size: contain;
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+.day-btn {
+  height: 3rem;
+  min-width: 3rem;
+}
+#update {
+  background-image: url(./img/Refresh_icon.svg);
+  background-size: contain;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 5px;
+  border: black 1px solid;
+  margin-top: 0.2rem;
+}
+#update-btn {
+  margin-left: 1rem;
+}
+#update-text {
+  margin: auto;
+}
+#last-updated {
+  font-weight: bold;
+}
 select::-ms-expand {
   display: none;
 }
