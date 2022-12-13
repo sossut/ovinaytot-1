@@ -11,7 +11,7 @@ const moveMarker = () => {
   const minutes = plusSecond.getMinutes();
 
   if (hours < 7 || hours >= 22) {
-    document.querySelector(".dayview-now-marker").style.top = -10 + "px";
+    document.querySelector(".dayview-now-marker").style.top = -1000 + "px";
   } else {
     document.querySelector(".dayview-now-marker").style.top =
       (containerHeight * (hours - 7 + minutes / 60)) / 15 + "px";
