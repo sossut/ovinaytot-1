@@ -340,7 +340,9 @@ input:checked + .slider:before {
       align-items: center;
       margin: 1rem auto auto auto;
     }
-
+#room-date {
+  margin-top: 1rem;
+}
 
 
 
@@ -373,6 +375,7 @@ input:checked + .slider:before {
 }
 
 @media screen and (max-width: 1350px) {
+
   #month-view {
     display: none;
   }
@@ -456,6 +459,7 @@ input:checked + .slider:before {
     margin-left: 0;
     width: 90%;
     justify-content: center;
+    margin-top: 0;
   }
 
 }
