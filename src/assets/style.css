@@ -36,10 +36,7 @@ select {
   margin: 2rem auto auto auto;
   display: flex;
 }
-#today {
-  min-width: 5rem;
-  transform: translateY(8px);
-}
+
 #tomorrow {
   background-image: url(./img/arrowpng.parspng.com-5.png);
   background-size: contain;
@@ -140,15 +137,19 @@ select::-ms-expand {
 
 #today-date {
   width: fit-content;
-  margin: 0 auto 2rem auto;
+  margin: 0 auto 0.5rem auto;
   font-size: 1.5rem;
 }
 
 #date-div {
   display: flex;
+  justify-content: space-around;
   margin: auto auto 2rem auto;
 }
-
+#date-and-room {
+  display: flex;
+  flex-direction: column;
+}
 #caledar-div {
   font-family: Roboto, Helvetica, Arial, sans-serif;
   padding: 25px;
@@ -172,8 +173,9 @@ select::-ms-expand {
 
 #room {
   width: fit-content;
-  margin: 0 auto 0 auto;
+  margin: 0 auto 0.5rem auto;
   font-size: 1.5rem;
+
 }
 
 #date-buttons button {
@@ -291,10 +293,10 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-#day-switch {
-  /* mobiilinäkymässä pelkkä päivänäkymä */
+/* #day-switch {
+
   display: none;
-}
+} */
 #day-switch p {
   margin: 0 10px;
 }
@@ -321,7 +323,8 @@ input:checked + .slider:before {
   background-color: lightblue;
   border-radius: 0.5rem;
   margin-right: 2rem;
-
+  min-width: 5rem;
+    transform: translateY(-2px);
 }
 #tomorrow {
   background-color: lightgreen;
@@ -329,11 +332,66 @@ input:checked + .slider:before {
   border-radius: 0.5rem;
 }
 #refresh {
-  margin: 2rem auto auto auto;
+  margin: 0 auto auto auto;
+}
+    #day-switch {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 1rem auto auto auto;
+    }
+
+
+
+
+
+
+@media screen and (min-width: 600px) {
+
+  /* #room {
+    position: absolute;
+    top: 0;
+    margin: 1rem auto auto 0;
+    display: block;
+  }
+  #today-date {
+    position: absolute;
+    top: 0;
+    margin: 4rem auto auto 0;
+  } */
+  #date-room {
+    margin-left: auto;
+    overflow: hidden;
+
+  }
+  /* #refresh {
+    position: absolute;
+    top: 0;
+    margin: 8rem auto auto 0;
+  } */
+
 }
 
-
-
+@media screen and (max-width: 1350px) {
+  #month-view {
+    display: none;
+  }
+  #date-buttons {
+    display: flex;
+  }
+  #today {
+    transform: translateY(0px);
+  }
+  #date-and-room {
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  #room-date {
+    margin-left: auto;
+  }
+}
 /* kännykälle sopivat setit */
 @media screen and (max-width: 900px) {
   html {
@@ -352,9 +410,11 @@ input:checked + .slider:before {
     display: block;
     margin: auto auto 0.5rem auto;
   }
-#today {
-  transform: translateY(0px);
-}
+
+  #today {
+    transform: translateY(0px);
+  }
+
   #date-buttons {
     display: flex;
     width: fit-content;
@@ -375,58 +435,27 @@ input:checked + .slider:before {
     display: none;
   }
 
-  #toggle-calendar {
+  /* #toggle-calendar {
     display: none;
-  }
+  } */
 
   /* */
   #calendar-div {
     padding: 0;
     width: 100%;
   }
+
+  #date-and-room {
+    flex-direction: column;
+    justify-content: center;
+  }
+
   #room-date {
     display: flex;
     flex-wrap: wrap;
-  }
-}
-
-
-
-@media screen and (min-width: 600px) {
-  #day-switch {
-    display: flex;
+    margin-left: 0;
+    width: 90%;
     justify-content: center;
-    align-items: center;
-    margin: 1rem auto auto auto;
-  }
-  #room {
-    position: absolute;
-    top: 0;
-    margin: 1rem auto auto 2rem;
-    display: block;
-  }
-  #today-date {
-    position: absolute;
-    top: 0;
-    margin: 4rem auto auto 2rem;
-  }
-  #date-room {
-    margin-left: 12rem;
-    overflow: hidden;
-  }
-  #refresh {
-    position: absolute;
-    top: 0;
-    margin: 8rem auto auto 2rem;
   }
 
-}
-
-@media screen and (max-width: 1350px) {
-  #month-view {
-    display: none;
-  }
-  #date-buttons {
-    display: flex;
-  }
 }

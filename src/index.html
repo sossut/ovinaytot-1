@@ -6,8 +6,8 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
     <link rel="stylesheet" href="assets/calendar.css" />
     <link rel="stylesheet" href="assets/style.css" />
-    <!-- <link rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
-    <link rel="apple-touch-icon" href="assets/img/icon.png"> -->
+    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
+    <link rel="apple-touch-icon" href="assets/img/icon.png" />
 
     <link
       href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
@@ -27,51 +27,51 @@
   <body>
     <main>
       <div id="date-div">
-        <div id="date-room">
-          <div id="day-switch">
-            <p>Päivänäkymä</p>
-            <label class="switch">
-              <input type="checkbox" id="switch-input" />
-              <span class="slider round"></span>
-            </label>
-            <p>Viikkonäkymä</p>
-          </div>
+        <div id="date-and-room">
+          <div id="date-room">
+            <div id="day-switch">
+              <p>Päivänäkymä</p>
+              <label class="switch">
+                <input type="checkbox" id="switch-input" />
+                <span class="slider round"></span>
+              </label>
+              <p>Viikkonäkymä</p>
+            </div>
 
+            <div id="drop-menu">
+              <div class="select" id="drop-menu">
+                <select name="rooms" id="rooms">
+                  <option selected disabled>Valitse huone</option>
+                </select>
+              </div>
+            </div>
 
-          <div id="drop-menu">
-            <div class="select" id="drop-menu">
-              <select name="rooms" id="rooms">
-                <option selected disabled>Valitse huone</option>
-              </select>
+            <div id="date-buttons">
+              <button class="day-btn" id="yesterday"></button>
+              <button class="day-btn" id="today">Tänään</button>
+              <button class="day-btn" id="tomorrow"></button>
             </div>
           </div>
-
-          <div id="date-buttons">
-            <button class="day-btn" id="yesterday"></button>
-            <button class="day-btn" id="today">Tänään</button>
-            <button class="day-btn" id="tomorrow"></button>
+          <div id="room-date">
+            <div id="today-date"></div>
+            <div id="room"></div>
+            <div id="refresh">
+              <div id="update-text">
+                <div>Viimeksi päivitetty:</div>
+                <span id="last-updated"></span>
+              </div>
+              <div id="update-btn">
+                <button id="update"></button>
+              </div>
+            </div>
           </div>
-
         </div>
+
         <div id="month-view">
           <button id="toggle-calendar"></button>
           <div id="color-calendar"></div>
         </div>
       </div>
-      <div id="room-date">
-      <div id="today-date"></div>
-      <div id="room"></div>
-      <div id="refresh">
-        <div id="update-text">
-          <div>Viimeksi päivitetty:</div>
-          <span id="last-updated"></span>
-        </div>
-        <div id="update-btn">
-          <button id="update"></button>
-        </div>
-      </div>
-    </div>
-
 
       <div id="calendar-div" dir="rtl">
         <div class="dayview-container">
@@ -146,8 +146,7 @@
               <div class="dayview-now-marker"></div>
               <div class="dayview-grid-marker-start"></div>
               <div class="dayview-gridcell-container">
-                <div class="dayview-gridcell">
-                </div>
+                <div class="dayview-gridcell"></div>
               </div>
               <div class="dayview-grid-marker-end"></div>
             </div>
