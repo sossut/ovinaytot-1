@@ -38,7 +38,6 @@ select {
 }
 #today {
   min-width: 5rem;
-  transform: translateY(8px);
 }
 #tomorrow {
   background-image: url(./img/arrowpng.parspng.com-5.png);
@@ -227,7 +226,6 @@ select::-ms-expand {
   display: block;
 }
 
-
 /* The switch - the box around the slider */
 .switch {
   position: relative;
@@ -291,10 +289,6 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-#day-switch {
-  /* mobiilinäkymässä pelkkä päivänäkymä */
-  display: none;
-}
 #day-switch p {
   margin: 0 10px;
 }
@@ -321,18 +315,12 @@ input:checked + .slider:before {
   background-color: lightblue;
   border-radius: 0.5rem;
   margin-right: 2rem;
-
 }
 #tomorrow {
   background-color: lightgreen;
   border: 1px;
   border-radius: 0.5rem;
 }
-#refresh {
-  margin: 2rem auto auto auto;
-}
-
-
 
 /* kännykälle sopivat setit */
 @media screen and (max-width: 900px) {
@@ -352,9 +340,9 @@ input:checked + .slider:before {
     display: block;
     margin: auto auto 0.5rem auto;
   }
-#today {
-  transform: translateY(0px);
-}
+  #today {
+    transform: translateY(0px);
+  }
   #date-buttons {
     display: flex;
     width: fit-content;
@@ -368,6 +356,7 @@ input:checked + .slider:before {
 
   #today-date {
     font-size: 1.5rem;
+    margin: 0 auto 0.5rem auto;
   }
 
   /* nappula ja kuukausikalenteri pitää kikkailla johonkin väliin */
@@ -388,9 +377,14 @@ input:checked + .slider:before {
     display: flex;
     flex-wrap: wrap;
   }
+  #refresh {
+    margin: 0 auto 1rem auto;
+  }
+  #day-switch {
+    display: flex;
+    width: fit-content;
+  }
 }
-
-
 
 @media screen and (min-width: 600px) {
   #day-switch {
@@ -411,7 +405,6 @@ input:checked + .slider:before {
     margin: 4rem auto auto 2rem;
   }
   #date-room {
-    margin-left: 12rem;
     overflow: hidden;
   }
   #refresh {
@@ -419,7 +412,6 @@ input:checked + .slider:before {
     top: 0;
     margin: 8rem auto auto 2rem;
   }
-
 }
 
 @media screen and (max-width: 1350px) {

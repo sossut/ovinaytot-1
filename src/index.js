@@ -464,8 +464,14 @@ dispSwitch.addEventListener("change", (e) => {
 });
 
 const displayDate = (date) => {
+  const options = {
+    weekday: "short",
+    month: "2-digit",
+    day: "numeric",
+    year: "numeric",
+  };
   document.getElementById("today-date").innerHTML = "";
-  const todayDate = date.toDateString();
+  const todayDate = date.toLocaleDateString(undefined, options);
   document.getElementById("today-date").innerHTML = todayDate;
 };
 const displayRoom = (room) => {
