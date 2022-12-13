@@ -475,6 +475,7 @@ let calendar = new Calendar({
   theme: "glass",
   border: "5px solid #6670bf",
   weekdayType: "long-upper",
+  startWeekday: 1,
   monthDisplayType: "long",
   headerColor: "white",
   headerBackgroundColor: "#6670bf",
