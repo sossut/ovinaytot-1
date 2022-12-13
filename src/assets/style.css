@@ -159,7 +159,6 @@ select::-ms-expand {
 
 #date-room {
   margin: 0 auto 0 auto;
-  width: 50%;
 }
 
 #month-view {
@@ -353,10 +352,6 @@ input:checked + .slider:before {
     display: block;
     margin: auto auto 0.5rem auto;
   }
-
-  #date-room {
-    width: 100%;
-  }
 #today {
   transform: translateY(0px);
 }
@@ -391,6 +386,7 @@ input:checked + .slider:before {
   }
   #room-date {
     display: flex;
+    flex-wrap: wrap;
   }
 }
 
@@ -414,6 +410,15 @@ input:checked + .slider:before {
     top: 0;
     margin: 4rem auto auto 2rem;
   }
+  #date-room {
+    margin-left: 12rem;
+    overflow: hidden;
+  }
+  #refresh {
+    position: absolute;
+    top: 0;
+    margin: 8rem auto auto 2rem;
+  }
 
 }
 
@@ -423,8 +428,5 @@ input:checked + .slider:before {
   }
   #date-buttons {
     display: flex;
-  }
-  #refresh {
-    margin: 1rem auto auto auto;
   }
 }
