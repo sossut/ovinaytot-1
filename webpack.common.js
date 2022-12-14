@@ -43,7 +43,7 @@ module.exports = {
     new WebpackPwaManifest({
       name: "Ovinäyttö",
       id: "/",
-      publicPath: "/",
+      publicPath: "/~jukkaptu/ovinaytto/",
       short_name: "oviPWA",
       filename: "manifest.json",
       description: "Ovinaytto PWA",
