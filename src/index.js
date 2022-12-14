@@ -21,7 +21,7 @@ const dayGrid = document.querySelector(".dayview-gridcell");
 const updated = document.querySelector("#last-updated");
 const updateButton = document.querySelector("#update");
 const dispSwitch = document.querySelector("#switch-input");
-const weekday = document.querySelector(".weekday");
+const weekday = document.querySelectorAll(".weekday");
 let selectedRoom;
 
 const date = new Date();
@@ -527,9 +527,14 @@ if ("serviceWorker" in navigator) {
 displayDate(date);
 displayRoom(selectedRoom);
 getRooms();
-getReservations(date, selectedRoom);
+
 setInterval(moveMarker, 1000);
 setInterval(check, 1000);
 removeOldLocalStorage();
 renderTimestamp();
-// getWeekReservations(selectedDay, selectedRoom);
+if (!dispSwitch.checked) {
+  getReservations(date, selectedRoom);
+} else {
+  getWeekReservations(selectedDay, selectedRoom);
+}
+//
